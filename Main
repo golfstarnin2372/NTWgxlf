@@ -1,3 +1,15 @@
+repeat task.wait() until game:IsLoaded()
+_G.HeeBF = { 
+    ['LogInventory'] = {"Cursed Dual Katana", "Hallow Scythe", "Soul Guitar", "Dark Dagger", "Dark Coat", "True Triple Katana", "Tushita", "Yama","Pale Scarf"},    
+    ["Sheet language"] = 1,
+    ["Sheet Modes"] = 1,
+    ["BestSheet"] = "https://sheet.best/api/sheets/42efee8d-5432-4327-9109-bf063ba31f5a",
+    ["Log Mode"] = "Normal",-- Star/Emoji/Normal/Rex/Zuxy
+}
+
+
+
+
 
 _G.OnlyRareItemPlus = true
 _G.ShowLegendary = true
@@ -1265,8 +1277,6 @@ end)
                                 Type = "โมจิตื่นดาบคู่"
                             elseif S == 6 then 
                                 Type = "โมจิตื่น"    
-                            elseif S == 6 then
-                                Type = "Full Mochi"
                             elseif CDKHas then
                                 Type = "ดาบคู่"  
                             else
@@ -1577,14 +1587,18 @@ end)
                             Nexus:CreateLabel("loginfo", "BestSheet")
                             Nexus:NewLine()
                             Nexus:CreateTextBox("loginput", _G.HeeBF["BestSheet"], {200, 20})
-                            Nexus:CreateButton("logbtn", "Log Sheet", {200, 35})
-                            --Nexus:CreateButton("Files", "Sent & Log Files", {200, 35})
-                            Nexus:CreateButton("logAdvance", "Advance Log", {200, 35})
+                            Nexus:CreateButton("logbtn", "Log Sheet", {100, 35})
+                            Nexus:CreateButton("logAdvance", "Advance Log", {100, 35})
                             Nexus:CreateButton("Clear", "Clear File Advance Log", {200, 35})
                             Nexus:CreateButton("Rejoin", "Rejoin", {100, 35})
                             Nexus:CreateButton("Shutdown", "Shutdown", {100, 35})
                             Nexus:CreateButton("World2", "World2", {100, 35})
                             Nexus:CreateButton("World3", "World3", {100, 35})
+                            Nexus:NewLine()
+                            Nexus:CreateButton("Human", "Human", {50, 25})
+                            Nexus:CreateButton("Mink", "Mink", {50, 25})
+                            Nexus:CreateButton("Angel", "Angel", {50, 25})
+                            Nexus:CreateButton("Fishman", "Fishman", {50, 25})
                             Nexus:NewLine()
                         end
                     )
@@ -1605,13 +1619,13 @@ end)
     Nexus:OnButtonClick("Shutdown",function()
         Game:Shutdown()
     end)
-
     local Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
     local Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
     local Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
     Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
     Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
     Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
+
     Nexus:OnButtonClick("World2",function()
         if Humann or Minkk or Sharkk then
             local args = {[1] = "TravelZou"}
@@ -1622,6 +1636,7 @@ end)
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
         end
     end) 
+    
     Nexus:OnButtonClick("World3",function()
         if Humann or Minkk or Sharkk then
             local args = {[1] = "TravelZou"}
@@ -1631,9 +1646,83 @@ end)
         end
     end)
 
-
-    --Nexus:OnButtonClick("Files",function() end) 
     
+    Nexus:OnButtonClick("Human",function()
+        local HumanR = false
+        repeat
+            Race = game.Players.LocalPlayer.Data.Race.Value
+            wait(2)
+            if Race == "Human" then
+                HumanR = true
+            elseif HumanR == false then
+                local args = {[1] = "BlackbeardReward",[2] = "Reroll",[3] = "2"}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end 
+        until (HumanR == true)
+    end)
+    Nexus:OnButtonClick("Mink",function()
+        local MinkR = false
+        repeat
+            Race = game.Players.LocalPlayer.Data.Race.Value
+            wait(2)
+            if Race == "Mink" then
+                MinkR = true
+            elseif MinkR == false then
+                local args = {[1] = "BlackbeardReward",[2] = "Reroll",[3] = "2"}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        until (MinkR == true)
+    end)
+    Nexus:OnButtonClick("Angel",function()
+        local AngelR = false
+        repeat
+            Race = game.Players.LocalPlayer.Data.Race.Value
+            wait(2)
+            if Race == "Skypiea" then
+                AngelR = true
+            elseif AngelR == false then
+                local args = {[1] = "BlackbeardReward",[2] = "Reroll",[3] = "2"}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        until (AngelR == true)
+    end)
+    Nexus:OnButtonClick("Fishman",function()
+        local FishmanR = false
+        repeat
+            Race = game.Players.LocalPlayer.Data.Race.Value
+            wait(2)
+            if Race == "Fishman" then
+                FishmanR = true
+            elseif FishmanR == false then
+                local args = {[1] = "BlackbeardReward",[2] = "Reroll",[3] = "2"}
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end
+        until (FishmanR == true)
+    end)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function PraseFruit()
             r = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
                     if r then
@@ -1988,7 +2077,7 @@ end)
                         elseif S == 6 then 
                             Type = "โมจิตื่น"    
                         elseif CDKHas then
-                            Type = "ดาบคู่"  
+                            Type = "ดาบคู่" 
                         else
                             Type = "ไก่กากน่าสมเพช"
                         end
