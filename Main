@@ -1,16 +1,4 @@
 repeat task.wait() until game:IsLoaded()
-_G.HeeBF = { 
-    ['LogInventory'] = {"Cursed Dual Katana", "Hallow Scythe", "Soul Guitar", "Dark Dagger", "Dark Coat", "True Triple Katana", "Tushita", "Yama","Pale Scarf"},    
-    ["Sheet language"] = 1,
-    ["Sheet Modes"] = 1,
-    ["BestSheet"] = "https://sheet.best/api/sheets/42efee8d-5432-4327-9109-bf063ba31f5a",
-    ["Log Mode"] = "Normal",-- Star/Emoji/Normal/Rex/Zuxy
-}
-
-
-
-
-
 _G.OnlyRareItemPlus = true
 _G.ShowLegendary = true
 pcall(function()
