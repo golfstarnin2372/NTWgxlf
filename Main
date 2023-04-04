@@ -134,8 +134,7 @@ end)
 
 
     wait(5)
-        spawn(
-            function()
+    spawn(function()
                 while wait(5) do
                     local World = ""
                     local Money = ""
@@ -145,7 +144,6 @@ end)
                     local Fruit = ""
                     local Material = ""
                     local Race = ""
-                    local World = ""
                     local FruitMastery = ""
                     local Gun = ""
                     local HttpService = game:GetService("HttpService")
@@ -178,9 +176,15 @@ end)
                     Fragment = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Fragments.Value)))
                     Race = game:GetService("Players").LocalPlayer.Data.Race.Value
                     Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-                    if game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") == 0 then World = 3
-                    elseif game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and not game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") and game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") ~= 0 then World = 2
-                    else  World = 1 end
+
+                    local placeId = game.PlaceId
+                    if placeId == 2753915549 then
+                        World = "1"
+                    elseif placeId == 4442272183 then
+                        World = "2"
+                    elseif placeId == 7449423635 then
+                        World = "3"
+                    end
         
                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
                     for i, __ in pairs(RequestgetInventory) do
@@ -434,19 +438,9 @@ end)
                     end
 
 
-
-                    local placeId = game.PlaceId
-                    if placeId == 2753915549 then
-                        WX = "1"
-                    elseif placeId == 4442272183 then
-                        WX = "2"
-                    elseif placeId == 7449423635 then
-                        WX = "3"
-                    end
-
-                     Sex = ""
+                     HeeDes = ""
                      if _G.HeeBF["Log Mode"] == "Normal" then
-                        Sex = Sex..WX.." "..AwakedStat..CurrentFruitName.." ⪼ L: "..Level.." M: "..Money.." F: "..Fragment.." \nMelee: "..Malee.."\n".."Fruit Inventory: \n"..Fruit.."\nInventory: "..Sword.." W:"..World
+                        HeeDes = HeeDes..World.." "..AwakedStat..CurrentFruitName.." ⪼ L: "..Level.." M: "..Money.." F: "..Fragment.." \nMelee: "..Malee.."\n".."Fruit Inventory: \n"..Fruit.."\nInventory: "..Sword
                      end
                         
                     
@@ -454,17 +448,12 @@ end)
                         {
                             Method = "POST",
                             Url = "http://localhost:7963/SetDescription?Account=" .. Username,
-                            Body = Sex
+                            Body = HeeDes
                         }
                     )
                 end
             end
         )
-
-
-
-
-
 
 
 
@@ -554,14 +543,6 @@ end)
                         end
                     end
                     
-                    local Ml = 0
-                    if HasDragonTalon then Ml = Ml + 1 end
-                    if HasElectricClaw then Ml = Ml + 1 end
-                    if HasSuperhuman then Ml = Ml + 1 end
-                    if HasSharkmanKarate then Ml = Ml + 1 end
-                    if HasDeathStep then Ml = Ml + 1 end
-                    if HasGodhuman then Ml = Ml + 1 end
-    
                     HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
                       if HHH then
                        S = 0	
@@ -596,7 +577,7 @@ end)
                         DDG = true
                     end
                     
-                                 RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+                    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
                      for i,x in pairs(RequestgetInventory) do
                           if x["Type"] == "Gun" then
                               if x["Name"] == "Soul Guitar" then
@@ -651,63 +632,12 @@ end)
                         Helmed = true
                     end
                 end
-                    Payload = ""
-                    StartCount = ""
-                if _G.HeeBF["Log Mode"] == "Emoji"  then
-                    if S == 6 then
-                        StartCount = StartCount.."🍩"
-                    end
-                    if CDKYed == true then
-                        StartCount = StartCount.."⚔️"
-                    end
-                    if Ml == 6 then
-                        StartCount = StartCount.."👊"
-                    end
-                    if SG then
-                        StartCount = StartCount.."🎸"
-                    end
-                    if HS then
-                        StartCount = StartCount.."⛏"
-                    end
-        
-                    elseif _G.HeeBF["Log Mode"] == "Star" then
-                      
-                   if S == 5 and Ml == 6 then
-                        oneStar = true
-                   end
-                    if S == 5 and Ml == 6 and CDKYed == true then
-                        oneStar = false
-                        twoStar = true
-                    end
-                    if  S == 6 and Ml == 6 then 
-                        oneStar = false
-                        twoStar = false
-                        threeStar = true
-                    end
-                    if S == 6 and Ml == 6 and CDKYed == true then
-                        threeStar = false
-                        twoStar = false
-                        oneStar = false
-                        fourStar = true
-                    end
-                    if oneStar == true then
-                        StartCount = "⭐"
-                    elseif twoStar == true then
-                        StartCount = "⭐⭐"
-                    elseif threeStar == true then
-                        StartCount = "⭐⭐⭐"
-                    elseif fourStar == true  then
-                        StartCount = "⭐⭐⭐⭐"
-                    elseif DDG then
-                        StartCount = StartCount.."🗡️"
-                    end
-                end
+
                 RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
                 for i,x in pairs(RequestgetInventory) do
                      if x["Type"] == "Gun" then
                          if x["Name"] == "Soul Guitar" then
                            SGQQQ = true
-                        
                          end
                      end
                 end  
@@ -787,157 +717,79 @@ end)
                 end
 
 
-
+                HeeDes = ""
                 if _G.HeeBF["Log Mode"] == "Normal" then
-                    Payload = Payload.."[ "                
+                    HeeDes = HeeDes.."[ "                
                     if SixMalee and Moji and af and CDK then
-                        Payload = Payload .. "โมตื่นดาบคู่  "..showrace
+                        HeeDes = HeeDes .. "โมตื่นดาบคู่  "..showrace
                     elseif SixMalee and CDK and Moji then
-                        Payload = Payload .. "โมไม่ตื่นดาบคู่  "..showrace
+                        HeeDes = HeeDes .. "โมไม่ตื่นดาบคู่  "..showrace
                     elseif SixMalee and Moji and af  then
-                        Payload = Payload .. "โมตื่น6หมัด  "..showrace
+                        HeeDes = HeeDes .. "โมตื่น6หมัด  "..showrace
                     elseif SixMalee and Moji then
-                        Payload = Payload .. "โมไม่ตื่น6หมัด  "..showrace
+                        HeeDes = HeeDes .. "โมไม่ตื่น6หมัด  "..showrace
                     elseif SixMalee and CDK then
-                        Payload = Payload .. "ดาบคู่  "..showrace
+                        HeeDes = HeeDes .. "ดาบคู่  "..showrace
                     elseif SixMalee then
-                        Payload = Payload .. "6หมัด  "..showrace
+                        HeeDes = HeeDes .. "6หมัด  "..showrace
                 
                     elseif FiveMalee and Moji and af and CDK then
-                        Payload = Payload .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
                     elseif FiveMalee and CDK and Moji then
-                        Payload = Payload .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
                     elseif FiveMalee and Moji and af  then
-                        Payload = Payload .. "5หมัด👊 โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นครบ🎂"
                     elseif FiveMalee and Moji then
-                        Payload = Payload .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
                     elseif FiveMalee and CDK then
-                        Payload = Payload .. "5หมัด👊 ดาบคู่⚔️"
+                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️"
                     elseif FiveMalee then
-                        Payload = Payload .. "5หมัด👊"   
+                        HeeDes = HeeDes .. "5หมัด👊"   
                         
                     elseif FourMalee and Moji and af and CDK then
-                        Payload = Payload .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
                     elseif FourMalee and CDK and Moji then
-                        Payload = Payload .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
                     elseif FourMalee and Moji and af  then
-                        Payload = Payload .. "4หมัด👊 โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นครบ🎂"
                     elseif FourMalee and Moji then
-                        Payload = Payload .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
                     elseif FourMalee and CDK then
-                        Payload = Payload .. "4หมัด👊 ดาบคู่⚔️"
+                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️"
                     elseif FourMalee then
-                        Payload = Payload .. "4หมัด👊"   
+                        HeeDes = HeeDes .. "4หมัด👊"   
                         
                     elseif ThreeMalee and Moji and af and CDK then
-                        Payload = Payload .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
                     elseif ThreeMalee and CDK and Moji then
-                        Payload = Payload .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
                     elseif ThreeMalee and Moji and af  then
-                        Payload = Payload .. "3หมัด👊 โมจิตื่นครบ🎂"
+                        HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นครบ🎂"
                     elseif ThreeMalee and Moji then
-                        Payload = Payload .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
+                        HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
                     elseif ThreeMalee and CDK then
-                        Payload = Payload .. "3หมัด👊 ดาบคู่⚔️"
+                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️"
                     elseif ThreeMalee then
-                        Payload = Payload .. "3หมัด👊" 
+                        HeeDes = HeeDes .. "3หมัด👊" 
                         
                     elseif TwoMalee then
-                        Payload = Payload .. "ไก่กาก2หมัด👊"
+                        HeeDes = HeeDes .. "ไก่กาก2หมัด👊"
                     elseif OneMalee then 
-                        Payload = Payload .. "ไก่กาก1หมัด👊"  
+                        HeeDes = HeeDes .. "ไก่กาก1หมัด👊"  
                     end
-                    Payload = Payload.." ]"              
+                    HeeDes = HeeDes.." ]"              
 
                 end
-                
-
-
-
-
-
-
-
-
-                if _G.HeeBF["Log Mode"] == "Star" or _G.HeeBF["Log Mode"] == "Emoji" then
-                   Payload = Payload.."["..game:GetService("Players").LocalPlayer.Data.Level.Value.."] | "
-                    if MyFruit == "" then
-                        Payload = Payload.."None".." | "..StatusAwake.." | "
-                    else
-                        Payload = Payload..CurrentFruitName.." - "..StatusAwake.." | "
-                    end
-                    if Ml == 6 then
-                        Payload = Payload.."[".."GOD".."]"
-                    else
-                        Payload = Payload.."["..Ml.."/6".."]"
-                    end
-                    Payload = Payload.." | "..StartCount
-            elseif _G.HeeBF["Log Mode"] == "Rex" then
-                if Ml == 6 then
-                    Payload = Payload.."[".."GOD".."]"
-                else
-                    Payload = Payload.."["..Ml.."/6".."]"
-                end
-                if CDKYed == true then
-                    Payload = Payload.."⪼ CDK"
-                end
-                if SGQQQ == true then
-                    Payload = Payload.." | SG"
-                end
-                if GetMaterial("Mirror Fractal") then
-                    Payload = Payload.." ⪼ Mirror"
-                end
-                if Helmed == true then
-                    Payload = Payload.." | Helm"
-                end
-            elseif _G.HeeBF["Log Mode"] == "Zuxy" then
-                GodStatusCheck = "❌"
-                CDKStatusCheck = "❌"
-                MRStatusCheck = "❌"
-                VkStatusCheck = "❌"
-                SGStatusCheck = "❌"
-                FruitAwakedStatus = "❌"
-                if CurrentFruitName == "Dough" then
-                    if S == 6 then
-                        FruitAwakedStatus = "✔️"
-                    end
-                    elseif CurrentFruitName == "Quake" then
-                        if S == 4 then
-                            FruitAwakedStatus = "✔️"
-                        end
-                else
-                    if S == 5 then
-                        FruitAwakedStatus = "✔️"
-                    end
-                end
-                if Ml == 6 then
-                    GodStatusCheck = "✔️"
-                end
-                if CDKYed == true then
-                    CDKStatusCheck = "✔️"
-                end
-                if GetMaterial("Mirror Fractal") then 
-                    MRStatusCheck = "✔️"
-                end
-                if Helmed == true then
-                    VkStatusCheck= "✔️"
-                end
-                if SGQQQ == true then
-                    SGStatusCheck = "✔️"
-                end
-                Payload = Payload.."GOD"..GodStatusCheck.."|CDK"..CDKStatusCheck.."|Mirror"..MRStatusCheck.."|VK"..VkStatusCheck.."|SG"..SGStatusCheck.."|"..CurrentFruitName..FruitAwakedStatus.."|"
-            end
-                        Request(
+                Request(
                         {
                             Method = "POST",
                             Url = "http://localhost:7963/SetAlias?Account=" .. Username,
-                            Body = Payload
+                            Body = HeeDes
                         }
                     )
                 end
         
-        end
-        )
+        end)
 
 
 
@@ -962,7 +814,6 @@ end)
                     local Fruit = ""
                     local Material = ""
                     local Race = ""
-                    local World = ""
                     local FruitMastery = "N/A"
                     local FruitName = "N/A"
                     local Gun = ""
@@ -1012,18 +863,13 @@ end)
                     Race = game:GetService("Players").LocalPlayer.Data.Race.Value
                     Level = game:GetService("Players").LocalPlayer.Data.Level.Value
                 
-                    if
-                        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and
-                            game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") == 0
-                     then
-                        World = "3"
-                    elseif
-                        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and
-                            not game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") == 0
-                     then
-                        World = "2"
-                    else
+                    local placeId = game.PlaceId
+                    if placeId == 2753915549 then
                         World = "1"
+                    elseif placeId == 4442272183 then
+                        World = "2"
+                    elseif placeId == 7449423635 then
+                        World = "3"
                     end
                 
                    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
@@ -1258,6 +1104,9 @@ end)
                                  end
                              end
                         end 
+                        if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
+                            SixMalee = true
+                        end
                     if _G.HeeBF["Sheet language"] == 1 then
                             if DDG and CDKHas and S == 6 then
                                 Type = "รวมมิตร"
@@ -1266,7 +1115,9 @@ end)
                             elseif S == 6 then 
                                 Type = "โมจิตื่น"    
                             elseif CDKHas then
-                                Type = "ดาบคู่"  
+                                Type = "ดาบคู่"
+                            elseif SixMalee then
+                                Type = "6หมัด"
                             else
                                 Type = "ไก่กากน่าสมเพช"
                             end
@@ -1746,7 +1597,6 @@ end)
                 Body = "Send Sheet - In Progress"
             }
         )
-                local World = ""
                 local Money = ""
                 local Username = game.Players.LocalPlayer.Name
                 local Fragment = ""
@@ -1804,18 +1654,13 @@ end)
                 Race = game:GetService("Players").LocalPlayer.Data.Race.Value
                 Level = game:GetService("Players").LocalPlayer.Data.Level.Value
         
-                if
-                    game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and
-                        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") == 0
-                 then
-                    World = "3"
-                elseif
-                    game.ReplicatedStorage.Remotes.CommF_:InvokeServer("DressrosaQuestProgress", "Dressrosa") == 0 and
-                        not game.ReplicatedStorage.Remotes.CommF_:InvokeServer("ZQuestProgress", "Zou") == 0
-                 then
-                    World = "2"
-                else
+                local placeId = game.PlaceId
+                if placeId == 2753915549 then
                     World = "1"
+                elseif placeId == 4442272183 then
+                    World = "2"
+                elseif placeId == 7449423635 then
+                    World = "3"
                 end
         
                RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
@@ -2056,7 +1901,9 @@ end)
                         else 
                             NotAllMelee = true
                         end
-    
+                        if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
+                            SixMalee = true
+                        end
                     if _G.HeeBF["Sheet language"] == 1 then
                         if DDG and CDKHas and S == 6 then
                             Type = "รวมมิตร"
@@ -2066,6 +1913,8 @@ end)
                             Type = "โมจิตื่น"    
                         elseif CDKHas then
                             Type = "ดาบคู่" 
+                        elseif SixMalee then
+                            Type = "6หมัด"
                         else
                             Type = "ไก่กากน่าสมเพช"
                         end
@@ -2178,9 +2027,9 @@ end)
             end
         end
         
-        local Payload
+        local HeeDes
         if _G.HeeBF["Sheet Modes"] == 1 then 
-            Payload =
+            HeeDes =
                 HttpService:JSONEncode(
                 {
                     ["ประเภทรหัส"] = Type,
@@ -2201,7 +2050,7 @@ end)
                 }
             )
         elseif _G.HeeBF["Sheet Modes"] == 2 then
-                Payload =
+                HeeDes =
                     HttpService:JSONEncode(
                     {
                         ["Username"] = Username,
@@ -2229,7 +2078,7 @@ end)
             {
                 ["Url"] = url,
                 ["Method"] = "POST",
-                ["Body"] = Payload,
+                ["Body"] = HeeDes,
                 ["Headers"] = {
                 ["Content-Type"] = "application/json"
             }
@@ -2315,12 +2164,12 @@ end)
     end
 end
     
-    local payload = HttpService:JSONEncode(allData)
+    local HeeDes = HttpService:JSONEncode(allData)
     syn.request(
         {
             ["Url"] = url,
             ["Method"] = "POST",
-            ["Body"] = payload,
+            ["Body"] = HeeDes,
             ["Headers"] = {
             ["Content-Type"] = "application/json"
             }
