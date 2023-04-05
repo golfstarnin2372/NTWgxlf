@@ -1,4 +1,8 @@
 repeat task.wait() until game:IsLoaded()
+
+
+
+
 _G.OnlyRareItemPlus = true
 _G.ShowLegendary = true
 pcall(function()
@@ -2084,8 +2088,7 @@ end)
     end)
 
     Nexus:OnButtonClick("logAdvance",function()
-
-
+    
 
     url = Nexus:GetText("loginput")
     warn("Press Log Button!!")
@@ -2173,11 +2176,9 @@ end
         )
         Rq({
             Method = "POST",
-            Url = "http://localhost:7963/SetAlias?Account="..UserAV,
-            Body = "[ Hee Sheet Service ]"
+            Url = "http://localhost:7963/SetDescription?Account="..UserAV,
+            Body = "[ AdvanceLog Sheet - Successfully ]"
         })
-        
-
     end
 
 end) 
