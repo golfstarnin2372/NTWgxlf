@@ -59,23 +59,6 @@ end)
                 Body = "CONNECTED NEXUS"..os.date(': %H:%M:%S')
             }
         )
-    print("--------------------------*----------------------------")
-    if _G.HeeBF["Sheet language"] == 1 then
-        print("Sheet language = Eng")
-    elseif _G.HeeBF["Sheet language"] == 2 then
-        print("Sheet language = Thai")
-    end
-    
-    if _G.HeeBF["Sheet Modes"] == 1 then
-        print("Sheet Modes = 1")
-    elseif _G.HeeBF["Sheet Modes"] == 2 then
-        print("Sheet Modes = 2")
-    end
-    
-        warn("Connecting Account Control.")
-        warn("Connecting Account Control..")
-        warn("Connecting Account Control...")
-    
         local folders = {
             "Hee Service"
         }
@@ -125,7 +108,6 @@ end)
         CurrentFruitName = "None"
     else
         CurrentFruitName = string.match(MyFruit, "%-(.*)")
-        print(CurrentFruitName)
     end
     
 
@@ -190,16 +172,16 @@ end)
                     for i, __ in pairs(RequestgetInventory) do
                         if __["Type"] == "Sword" then
                             if Sword == "" then
-                                if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus  then
-                                    if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
+                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                         Sword = __["Name"] .. " "
                                     end
                                 else
                                     Sword = __["Name"] .. " "
                                 end
                             else
-                                if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus then
-                                    if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
+                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                         Sword = Sword .. __["Name"] .. ", "
                                     end
                                 else
@@ -638,6 +620,7 @@ end)
                      if x["Type"] == "Gun" then
                          if x["Name"] == "Soul Guitar" then
                            SGQQQ = true
+                        
                          end
                      end
                 end  
@@ -876,16 +859,16 @@ end)
                         for i, __ in pairs(RequestgetInventory) do
                             if __["Type"] == "Sword" then
                                 if Sword == "" then
-                                    if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus  then
-                                        if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
+                                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                             Sword = __["Name"] .. " "
                                         end
                                     else
                                         Sword = __["Name"] .. " "
                                     end
                                 else
-                                    if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus then
-                                        if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
+                                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                             Sword = Sword..", ".. __["Name"]
                                         end
                                     else
@@ -1104,9 +1087,11 @@ end)
                                  end
                              end
                         end 
+
                         if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
                             SixMalee = true
                         end
+
                     if _G.HeeBF["Sheet language"] == 1 then
                             if DDG and CDKHas and S == 6 then
                                 Type = "รวมมิตร"
@@ -1230,9 +1215,8 @@ end)
                     
                 end
                 local folders = {
-                "Hee Advance Log/LogAccountForAdvance",
+                "Hee Service/AutoSaveDes",
                 }
-                
                 for _, folder in ipairs(folders) do
                     if not isfolder(folder) then
                         makefolder(folder)
@@ -1318,7 +1302,7 @@ end)
                 SwordInven = Sword,
                 ShowRaceSheet = showraceSave,
             }
-                writefile("Hee Advance Log/LogAccountForAdvance/".. game.Players.LocalPlayer.Name.. ".json", game:GetService("HttpService"):JSONEncode(_G.SaveDesScription))
+                writefile("Hee Service/AutoSaveDes/".. game.Players.LocalPlayer.Name.. ".json", game:GetService("HttpService"):JSONEncode(_G.SaveDesScription))
     
                 end)
             end
@@ -1346,7 +1330,6 @@ end)
                 _G.Delay = 10 
         end
         
-        print("Script Loading...")
         local HttpService = game:GetService("HttpService")
         local Request = syn.request
         join = game.Players.localPlayer.Neutral == false
@@ -1452,7 +1435,7 @@ end)
     end)
     Nexus:OnButtonClick("Clear",function()
     if isfolder then
-        delfolder('Hee Advance Log/LogAccountForAdvance')
+        delfolder('Hee Service/AutoSaveDes')
     end
     end)
     Nexus:OnButtonClick("Shutdown",function()
@@ -1577,9 +1560,7 @@ end)
                         return " | A. N/A )"
                     end
         end
-        Nexus:OnButtonClick(
-            "logbtn",
-            function()
+        Nexus:OnButtonClick("logbtn",function()
                 url = Nexus:GetText("loginput")
                 warn("Press Log Button!!")
                 local Rq = syn.request
@@ -1587,7 +1568,7 @@ end)
             {
                 Method = "POST",
                 Url = "http://localhost:7963/SetAlias?Account=" ..  game.Players.LocalPlayer.Name,
-                Body = "[ Piwwy Sheet Service ]"
+                Body = "[ Hee Sheet Service ]"
             }
         )
         Rq(
@@ -1667,16 +1648,16 @@ end)
                     for i, __ in pairs(RequestgetInventory) do
                         if __["Type"] == "Sword" then
                             if Sword == "" then
-                                if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus  then
-                                    if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
+                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                         Sword = __["Name"] .. " "
                                     end
                                 else
                                     Sword = __["Name"] .. " "
                                 end
                             else
-                                if _G.HeeBF["Inventory Log Des/Sheet"] and _G.OnlyRareItemPlus then
-                                    if table.find(_G.HeeBF["Inventory Log Des/Sheet"], __["Name"]) then
+                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
+                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                         Sword = Sword..", ".. __["Name"]
                                     end
                                 else
@@ -2089,7 +2070,7 @@ end)
             {
                 Method = "POST",
                 Url = "http://localhost:7963/SetAlias?Account=" ..  game.Players.LocalPlayer.Name,
-                Body = "[ Piwwy Sheet Service ]"
+                Body = "[ Hee Sheet Service ]"
             }
         )
         Rq(
@@ -2101,14 +2082,16 @@ end)
         )
         Game:Shutdown()
     end)
+
     Nexus:OnButtonClick("logAdvance",function()
+
+
+
     url = Nexus:GetText("loginput")
     warn("Press Log Button!!")
     local HttpService = game:GetService("HttpService")
-    
     local allData = {}
-
-    for _, fileName in ipairs(listfiles("Hee Advance Log/LogAccountForAdvance")) do
+    for _, fileName in ipairs(listfiles("Hee Service/AutoSaveDes")) do
         local playerData = nil
         local file = readfile(fileName)
 
@@ -2175,6 +2158,27 @@ end
             }
         }
     )
-    end) 
-    
-    print("Scripts Loaded")
+    wait(2)
+    for _, fileName in ipairs(listfiles("Hee Service/AutoSaveDes")) do
+        file = game:GetService('HttpService'):JSONDecode(readfile(fileName))
+        UserAV = (file["Name"])
+        Rq = syn.request
+        
+        Rq(
+            {
+                Method = "POST",
+                Url = "http://localhost:7963/SetAlias?Account="..UserAV,
+                Body = " "
+            }
+        )
+        Rq({
+            Method = "POST",
+            Url = "http://localhost:7963/SetAlias?Account="..UserAV,
+            Body = "[ Hee Sheet Service ]"
+        })
+        
+
+    end
+
+end) 
+print("Scripts Loaded")
