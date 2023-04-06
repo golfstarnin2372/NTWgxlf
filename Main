@@ -1,8 +1,4 @@
 repeat task.wait() until game:IsLoaded()
-
-
-
-
 _G.OnlyRareItemPlus = true
 _G.ShowLegendary = true
 pcall(function()
@@ -16,1301 +12,1151 @@ pcall(function()
 end)
 
 
+Req = syn.request 
+User = game.Players.LocalPlayer.Name
+Req({
+    Method = "POST",
+    Url = "http://localhost:7963/SetAlias?Account=" ..User,
+    Body = "[ Hee Service ]"
+    })
+Req({
+    Method = "POST",
+    Url = "http://localhost:7963/SetDescription?Account=" ..User,
+    Body = "Welcome to Hee Service"..os.date(': %H:%M:%S')
+    })
 
 
-
-    local Req = syn.request 
-    local User = game.Players.LocalPlayer.Name
+if not Nexus.IsConnected then
     Req({
         Method = "POST",
         Url = "http://localhost:7963/SetAlias?Account=" ..User,
         Body = "[ Hee Service ]"
-    })
-    
-    Req({
-        Method = "POST",
-        Url = "http://localhost:7963/SetDescription?Account=" ..User,
-        Body = "WELCOME TO Hee SERVICE"..os.date(': %H:%M:%S')
-    })
-
-
-
-    if not Nexus then
-    Req({
-        Method = "POST",
-        Url = "http://localhost:7963/SetAlias?Account=" ..User,
-        Body = "[ Hee Service ]"
-    })
-    Req({
-        Method = "POST",
-        Url = "http://localhost:7963/SetDescription?Account=" ..User,
-        Body = "WAITING NEXUS"..os.date(': %H:%M:%S')
-    })
-    end
-
-    
-    repeat task.wait() until Nexus
-        Req({
-            Method = "POST",
-            Url = "http://localhost:7963/SetAlias?Account=" ..User,
-            Body = "[ Hee Service ]"
         })
-    
-        Req(
-            {
-                Method = "POST",
-                Url = "http://localhost:7963/SetDescription?Account=" ..User,
-                Body = "CONNECTED NEXUS"..os.date(': %H:%M:%S')
-            }
-        )
-        local folders = {
-            "Hee Service"
-        }
-        if isfolder("Piwwy Hub Log Scripts") then
-            delfolder("Piwwy Hub Log Scripts")
-        end
-        for _, folder in ipairs(folders) do
-            if not isfolder(folder) then
-                makefolder(folder)
+    Req({
+        Method = "POST",
+        Url = "http://localhost:7963/SetDescription?Account=" ..User,
+        Body = "Waiting Account Control"
+        })
+end
+
+
+repeat task.wait() until Nexus.IsConnected
+local folders = {
+                "Hee Service"
+                }
+for _, folder in ipairs(folders) do
+    if not isfolder(folder) then
+        makefolder(folder)
+    end
+end
+if not isfile("Hee Service/Enter Password.json") then
+    writefile("Hee Service/Enter Password.json", game:GetService("HttpService"):JSONEncode(''))
+end
+function GetMaterial(matname)
+    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+        if type(v) == "table" then
+            if v.Type == "Material" then
+                if v.Name == matname then
+                return true
+                end
             end
         end
-        
-
-    if not isfile("Hee Service/Enter Password.json") then
-        writefile("Hee Service/Enter Password.json", game:GetService("HttpService"):JSONEncode(''))
     end
-        function GetMaterial(matname)
-            for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-                if type(v) == "table" then
-                    if v.Type == "Material" then
-                        if v.Name == matname then
-                            return true
+    return false
+end
+Req({
+        Method = "POST",
+        Url = "http://localhost:7963/SetDescription?Account=" ..  game.Players.LocalPlayer.Name,
+        Body = "LOADING SCRIPT"..os.date(': %H:%M:%S')
+    })
+local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
+local Request = syn.request
+local function formatNumber(number)
+local i, k, j = tostring(number):match("(%-?%d?)(%d*)(%.?.*)")
+    return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
+end
+local MyFruit = game:GetService("Players").LocalPlayer.Data.DevilFruit.Value
+local CurrentFruitName = ""
+if MyFruit == "" then
+    CurrentFruitName = "None"
+else
+    CurrentFruitName = string.match(MyFruit, "%-(.*)")
+end
+
+wait(5)
+spawn(function()
+    while wait(5) do
+        local World = ""
+        local Money = ""
+        local Username = game.Players.LocalPlayer.Name
+        local Fragment = ""
+        local Level = ""
+        local Fruit = ""
+        local Material = ""
+        local Race = ""
+        local FruitMastery = ""
+        local Gun = ""
+        local HttpService = game:GetService("HttpService")
+        local Malee = ""
+        local Sword = ""
+        local Accesorry = ""
+        local Awake = ""
+        local Combo = ""
+        local Evo = ""                    
+        function format_number_(n)
+            local x = n
+            local res = x:gsub(",","")
+            return tonumber(res)
+        end
+        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
+            if  v.Name == "Valkyrie Helm" then
+                Helmed = true
+            end
+        end
+        function foo(n)
+            if n >= 10^6 then
+                return string.format("%.0fM", n / 10^6)
+            elseif n >= 10^3 then
+                return string.format("%.0fK", n / 10^3)
+            else
+                return tostring(n)
+            end
+        end
+        Money = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Beli.Value)))
+        Fragment = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Fragments.Value)))
+        Race = game:GetService("Players").LocalPlayer.Data.Race.Value
+        Level = game:GetService("Players").LocalPlayer.Data.Level.Value
+        local placeId = game.PlaceId
+        if placeId == 2753915549 then
+            World = "1"
+        elseif placeId == 4442272183 then
+            World = "2"
+        elseif placeId == 7449423635 then
+            World = "3"
+        end
+        
+        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+        for i, __ in pairs(RequestgetInventory) do
+            if __["Type"] == "Sword" then
+                if Sword == "" then
+                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
+                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
+                            Sword = __["Name"] .. " "
                         end
+                    else
+                        Sword = __["Name"] .. " "
+                    end
+                else
+                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
+                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
+                            Sword = Sword .. __["Name"] .. ", "
+                        end
+                    else
+                        Sword = Sword .. __["Name"] .. ", "
                     end
                 end
             end
-            return false
-        end
-        Req(
-            {
-                Method = "POST",
-                Url = "http://localhost:7963/SetDescription?Account=" ..  game.Players.LocalPlayer.Name,
-                Body = "LOADING SCRIPT"..os.date(': %H:%M:%S')
-            }
-        )
-    
-        local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-        local Request = syn.request
-        local function formatNumber(number)
-            local i, k, j = tostring(number):match("(%-?%d?)(%d*)(%.?.*)")
-            return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
-        end
-    
-    local MyFruit = game:GetService("Players").LocalPlayer.Data.DevilFruit.Value
-    local CurrentFruitName = ""
-    if MyFruit == "" then
-        CurrentFruitName = "None"
-    else
-        CurrentFruitName = string.match(MyFruit, "%-(.*)")
-    end
-    
-
-
-
-
-
-    wait(5)
-    spawn(function()
-                while wait(5) do
-                    local World = ""
-                    local Money = ""
-                    local Username = game.Players.LocalPlayer.Name
-                    local Fragment = ""
-                    local Level = ""
-                    local Fruit = ""
-                    local Material = ""
-                    local Race = ""
-                    local FruitMastery = ""
-                    local Gun = ""
-                    local HttpService = game:GetService("HttpService")
-                    local Malee = ""
-                    local Sword = ""
-                    local Accesorry = ""
-                    local Awake = ""
-                    local Combo = ""
-                    local Evo = ""
-                    function format_number_(n)
-                        local x = n
-                        local res = x:gsub(",","")
-                        return tonumber(res)
-                    end
-                    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
-                        if  v.Name == "Valkyrie Helm" then
-                            Helmed = true
+            if __["Type"] == "Wear" then
+                if Accesorry == "" then
+                    Accesorry = __["Name"] .. " "
+                else
+                    Accesorry = Accesorry .. __["Name"] .. " "
+                end
+            end
+            if __["Type"] == "Blox Fruit" then
+                if Fruit == "" then
+                    if _G.ShowLegendary then
+                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
+                            Fruit = __["Name"] 
                         end
+                    else
+                        Fruit = __["Name"] 
                     end
-                    function foo(n)
-                        if n >= 10^6 then
-                            return string.format("%.0fM", n / 10^6)
-                        elseif n >= 10^3 then
-                            return string.format("%.0fK", n / 10^3)
-                        else
-                            return tostring(n)
+                else
+                    if _G.ShowLegendary then
+                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
+                            Fruit = Fruit .." \n"..__["Name"] 
                         end
+                    else
+                        Fruit = Fruit .. " \n"..__["Name"] 
                     end
-                    Money = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Beli.Value)))
-                    Fragment = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Fragments.Value)))
-                    Race = game:GetService("Players").LocalPlayer.Data.Race.Value
-                    Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-
-                    local placeId = game.PlaceId
-                    if placeId == 2753915549 then
-                        World = "1"
-                    elseif placeId == 4442272183 then
-                        World = "2"
-                    elseif placeId == 7449423635 then
-                        World = "3"
-                    end
+                end
+            end
+            if __["Type"] == "Material" then
+                if Material == "" then
+                    Material = __["Name"] .. " "
+                else
+                    Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
+                end
+            end
+            if __["Type"] == "Gun" then
+                if Gun == "" then
+                    Gun = __["Name"] .. " "
+                else
+                    Gun = Gun .. __["Name"] .. " "
+                end
+            end
+        end
         
-                    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                    for i, __ in pairs(RequestgetInventory) do
-                        if __["Type"] == "Sword" then
-                            if Sword == "" then
-                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
-                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                        Sword = __["Name"] .. " "
-                                    end
-                                else
+        
+        local args = {[1] = "BuyDeathStep",[2] = true}
+        DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if DeathStep == 1 then
+            HasDeathStep = true
+        else
+            HasDeathStep = false
+        end
+        wait(0.2)
+        
+
+        local args = {[1] = "BuySharkmanKarate",[2] = true}
+        SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if SharkmanKarate == 1 then
+            HasSharkmanKarate = true
+        else
+            HasSharkmanKarate = false
+        end
+        wait(0.2)
+        
+        
+        local args = {[1] = "BuySuperhuman",[2] = true}
+        Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if Superhuman == 1 then
+            HasSuperhuman = true
+        else
+            HasSuperhuman = false
+        end
+        wait(0.2)
+        
+        
+        local args = {[1] = "BuyElectricClaw",[2] = true}  
+        ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if ElectricClaw == 1 then
+            HasElectricClaw = true
+        else
+            HasElectricClaw = false
+        end
+        wait(0.2)
+
+
+        local args = {[1] = "BuyDragonTalon",[2] = true}
+        DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if type(DragonTalon) == "number" then
+            if DragonTalon == 1 then
+                HasDragonTalon = true
+            else
+                HasDragonTalon = false
+            end
+        end
+        wait(0.2)
+
+
+        local args = {[1] = "BuyGodhuman",[2] = true}
+        Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if type(Godhuman) == "number" then
+            if Godhuman == 1 then
+                HasGodhuman = true
+            else
+                HasGodhuman = false
+            end
+        end
+
+
+        MeleeCount = 0
+        if HasGodhuman then
+            Malee = Malee .. "Godhuman, "
+            MeleeCount = MeleeCount + 1
+        end
+        if HasSuperhuman then
+            Malee = Malee .. "Superhuman, "
+            MeleeCount = MeleeCount + 1
+        end
+        if HasElectricClaw then
+            Malee = Malee .. "ElectricV2, "
+            MeleeCount = MeleeCount + 1
+        end
+        if HasDragonTalon then
+            Malee = Malee .. "DragonV2, "
+            MeleeCount = MeleeCount + 1
+        end
+        if HasDeathStep then
+            Malee = Malee .. "DeathStepV2, "
+            MeleeCount = MeleeCount + 1
+        end
+        if HasSharkmanKarate then
+            Malee = Malee .. "SharkmanV2"
+            MeleeCount = MeleeCount + 1
+        end
+        for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            if v:IsA("Tool") then
+                if v.ToolTip == "Blox Fruit" then
+                    FruitMastery = v.Level.Value
+                    FruitName = v.Name
+                end
+            end
+        end
+        r = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
+        if r then
+            for i, v in pairs(r) do
+                if v["Awakened"] then
+                    Awake = Awake .. i .. " "
+                end
+            end
+        else
+            Awake = "None"
+        end
+        if game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved") then
+            Evo = ""
+        else
+            Evo = "No"
+        end
+        function GetWeaponInventory(Weaponname)
+            for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+                if v.Type == "Sword" then
+                    if v.Name == Weaponname then
+                        return true
+                    end
+                end
+            end
+        end
+        if GetWeaponInventory("Cursed Dual Katana") then
+            CDKYed = true
+         end
+         if GetWeaponInventory("Hallow Scythe") == true then
+            HSYed = true
+            end
+         if GetWeaponInventory("Dark Dagger") == true then
+             DDGYed = true
+             end
+             if GetWeaponInventory("Yama") == true then
+                YMYed = true
+                end
+         if GetWeaponInventory("Tushita") == true then
+          TSYed = true
+          end
+         if GetWeaponInventory("True Triple Katana") == true then
+         TTKYed = true
+         end
+        
+         RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+         for i,x in pairs(RequestgetInventory) do
+              if x["Type"] == "Gun" then
+                  if x["Name"] == "Soul Guitar" then
+                    SGYed = true
+                 
+                  end
+              end
+         end  
+         Awaked = S
+         HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
+         if HHH then
+          S = 0	
+        for i, v in pairs(HHH) do
+           if v["Awakened"] then
+            S = S + 1
+               end
+        end
+        else
+           S = 0
+        end
+        AwakeLimitsStatus = 5
+        AwakedStat = ""
+        if CurrentFruitName == 'Dough' then
+            AwakeLimitsStatus = 6
+            if S == 6 then Awaked = "Full" end
+        else 
+            if S == 5 then
+                Awaked = "Full "
+            end
+        end 
+        
+        if CurrentFruitName == "Dough" then
+            if S == 6 then
+                AwakedStat = "F."
+            end
+        elseif CurrentFruitName == "Quake" then
+            if S == 4 then
+                AwakedStat = "F."
+            end
+        else
+            if S == 5 then
+                AwakedStat = "F."
+            end
+        end
+        
+        
+         HeeDes = ""
+         if _G.HeeBF["Log Mode"] == "Normal" then
+            HeeDes = HeeDes..World.." "..AwakedStat..CurrentFruitName.." ⪼ L: "..Level.." M: "..Money.." F: "..Fragment.." \nMelee: "..Malee.."\n".."Fruit Inventory: \n"..Fruit.."\nInventory: "..Sword
+         end
+            
+        
+        Request({
+                Method = "POST",
+                Url = "http://localhost:7963/SetDescription?Account=" .. Username,
+                Body = HeeDes
+                })
+    end
+end)
+
+
+
+
+
+
+
+
+
+spawn(function()
+    while wait(5) do
+        local Username = game.Players.LocalPlayer.Name
+
+        local args = {[1] = "BuyDeathStep",[2] = true}
+        DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if DeathStep == 1 then
+            HasDeathStep = true
+        else
+            HasDeathStep = false
+        end
+        wait(0.2)
+        
+
+        local args = {[1] = "BuySharkmanKarate",[2] = true}
+        SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if SharkmanKarate == 1 then
+            HasSharkmanKarate = true
+        else
+            HasSharkmanKarate = false
+        end
+        wait(0.2)
+        
+        
+        local args = {[1] = "BuySuperhuman",[2] = true}
+        Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if Superhuman == 1 then
+            HasSuperhuman = true
+        else
+            HasSuperhuman = false
+        end
+        wait(0.2)
+        
+        
+        local args = {[1] = "BuyElectricClaw",[2] = true}  
+        ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if ElectricClaw == 1 then
+            HasElectricClaw = true
+        else
+            HasElectricClaw = false
+        end
+        wait(0.2)
+
+
+        local args = {[1] = "BuyDragonTalon",[2] = true}
+        DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if type(DragonTalon) == "number" then
+            if DragonTalon == 1 then
+                HasDragonTalon = true
+            else
+                HasDragonTalon = false
+            end
+        end
+        wait(0.2)
+
+
+        local args = {[1] = "BuyGodhuman",[2] = true}
+        Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        if type(Godhuman) == "number" then
+            if Godhuman == 1 then
+                HasGodhuman = true
+            else
+                HasGodhuman = false
+            end
+        end
+
+        local FruitName = ""
+        HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
+        if HHH then
+        S = 0	
+            for i, v in pairs(HHH) do
+                if v["Awakened"] then
+                    S = S + 1
+                end
+        end
+        else
+            S = "0"
+        end
+        StatusAwake = ""
+
+            StatusAwake = "Awaked".."{"..S.."}"
+
+        function GetWeaponInventory(Weaponname)
+            for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
+                if v.Type == "Sword" then
+                    if v.Name == Weaponname then
+                        return true
+                    end
+                end
+            end
+        end
+        --[[if GetWeaponInventory("Cursed Dual Katana") then
+            CDKYed = true
+        end]]
+
+
+        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+        for i,x in pairs(RequestgetInventory) do
+            if x["Type"] == "Gun" then
+                if x["Name"] == "Soul Guitar" then
+                    SG = true   
+                end
+            end
+        end
+
+        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
+            if  v.Name == "Valkyrie Helm" then
+                Helmed = true
+            end
+        end
+
+ 
+
+        if CDKHas then
+        CDK = true
+        end
+        if HasSuperhuman  then
+        OneMalee = true
+        end
+        if HasSuperhuman and HasDeathStep  then
+        TwoMalee = true
+        end
+        if HasSuperhuman and HasDeathStep and HasSharkmanKarate then
+        ThreeMalee = true
+        end 
+        if HasSuperhuman and HasDeathStep and HasSharkmanKarate and HasElectricClaw then
+        FourMalee = true
+        end
+        if HasSuperhuman and HasDeathStep and HasSharkmanKarate and HasElectricClaw and HasDragonTalon then
+        FiveMalee = true
+        end
+        if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
+        SixMalee = true
+        end 
+
+        Doughh = game:GetService("Players").LocalPlayer.Data.DevilFruit.Value
+        if Doughh == "Dough-Dough" then
+        Moji = true
+        end
+        af = S == 6
+
+        local showraceSave = ""
+        local THrace = ""
+        local Racee = game.Players.LocalPlayer.Data.Race.Value
+        local RaceV2 = game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved")
+        local RaceV4 = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Awakening")
+        local Ghoull = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heightened Senses")
+        local Angell = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heavenly Blood")
+        local Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
+        local Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
+        local Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
+        local Cybrogg = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Energy Core")
+
+        if Racee == "Human" then
+        THrace = "มนุษย์ "
+        elseif Racee == "Mink" then
+        THrace = "มิ้ง "
+        elseif Racee == "Skypiea" then
+        THrace = "นางฟ้า "
+        elseif Racee == "Fishman" then
+        THrace = "เงือก "
+        elseif Racee == "Cybrog" then
+        THrace = "ไซบ็อก "
+        elseif Racee == "Ghoul" then
+        THrace = "กูล "
+        end
+
+        if RaceV4 then
+        showrace = THrace .."v4👑"
+        elseif Humann then
+        showrace = THrace .."v3"
+        elseif Minkk then
+        showrace = THrace .."v3"
+        elseif Angell then
+        showrace = THrace.."v3"
+        elseif Sharkk then
+        showrace = THrace.."v3"
+        elseif Cybrogg  then
+        showrace = THrace.."v3"
+        elseif Ghoull then
+        showrace = THrace.."v3"
+        elseif RaceV2 then 
+        showrace = THrace.."V2"
+        else
+        showrace = THrace.."V1"
+        end
+
+
+        HeeDes = ""
+        if _G.HeeBF["Log Mode"] == "Normal" then
+        HeeDes = HeeDes.."[ "                
+        if SixMalee and Moji and af and CDK then
+            HeeDes = HeeDes .. "โมตื่นดาบคู่  "..showrace
+        elseif SixMalee and CDK and Moji then
+            HeeDes = HeeDes .. "โมไม่ตื่นดาบคู่  "..showrace
+        elseif SixMalee and Moji and af  then
+            HeeDes = HeeDes .. "โมตื่น6หมัด  "..showrace
+        elseif SixMalee and Moji then
+            HeeDes = HeeDes .. "โมไม่ตื่น6หมัด  "..showrace
+        elseif SixMalee and CDK then
+            HeeDes = HeeDes .. "ดาบคู่  "..showrace
+        elseif SixMalee then
+            HeeDes = HeeDes .. "6หมัด  "..showrace
+
+        elseif FiveMalee and Moji and af and CDK then
+            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+        elseif FiveMalee and CDK and Moji then
+            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+        elseif FiveMalee and Moji and af  then
+            HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นครบ🎂"
+        elseif FiveMalee and Moji then
+            HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
+        elseif FiveMalee and CDK then
+            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️"
+        elseif FiveMalee then
+            HeeDes = HeeDes .. "5หมัด👊"   
+            
+        elseif FourMalee and Moji and af and CDK then
+            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+        elseif FourMalee and CDK and Moji then
+            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+        elseif FourMalee and Moji and af  then
+            HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นครบ🎂"
+        elseif FourMalee and Moji then
+            HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
+        elseif FourMalee and CDK then
+            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️"
+        elseif FourMalee then
+            HeeDes = HeeDes .. "4หมัด👊"   
+            
+        elseif ThreeMalee and Moji and af and CDK then
+            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+        elseif ThreeMalee and CDK and Moji then
+            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+        elseif ThreeMalee and Moji and af  then
+            HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นครบ🎂"
+        elseif ThreeMalee and Moji then
+            HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
+        elseif ThreeMalee and CDK then
+            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️"
+        elseif ThreeMalee then
+            HeeDes = HeeDes .. "3หมัด👊" 
+            
+        elseif TwoMalee then
+            HeeDes = HeeDes .. "ไก่กาก2หมัด👊"
+        elseif OneMalee then 
+            HeeDes = HeeDes .. "ไก่กาก1หมัด👊"  
+        end
+        HeeDes = HeeDes.." ]"              
+
+        end
+
+        Request({
+                Method = "POST",
+                Url = "http://localhost:7963/SetAlias?Account=" .. Username,
+                Body = HeeDes
+                })
+    end
+end)
+
+
+
+
+
+spawn(function()
+    while true do wait()
+        pcall(function()
+            local World = ""
+            local Money = ""
+            local Username = game.Players.LocalPlayer.Name
+            local Fragment = ""
+            local Level = ""
+            local Fruit = ""
+            local Material = ""
+            local Race = ""
+            local FruitMastery = "N/A"
+            local FruitName = "N/A"
+            local Gun = ""
+            local RequestgetInventory
+            local HttpService = game:GetService("HttpService")
+            local Malee = ""
+            local Sword = ""
+            local Accesorry = ""
+            local Awake = ""
+            local Combo = ""
+            local MFStatus = "❌"
+            local HelmedStatus = "❌"
+            local function formatNumber(number)
+                local i, k, j = tostring(number):match("(%-?%d?)(%d*)(%.?.*)")
+                return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
+            end
+            local function notifyCheck(types, ...)
+                if types == "Notify" then
+                    require(game.ReplicatedStorage.Notification).new(...):Display()
+                end
+            end
+            for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
+                if  v.Name == "Valkyrie Helm" then
+                    Helmed = true
+                end
+            end
+            w = 0
+
+            function format_number_(n)
+                local x = n
+                local res = x:gsub(",","")
+                return tonumber(res)
+            end
+
+            function foo(n)
+                if n >= 10^6 then
+                    return string.format("%.0fM", n / 10^6)
+                elseif n >= 10^3 then
+                    return string.format("%.0fK", n / 10^3)
+                else
+                    return tostring(n)
+                end
+            end
+
+            Money = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Beli.Value)))
+            Fragment = foo(game:GetService("Players").LocalPlayer.Data.Fragments.Value)
+            Race = game:GetService("Players").LocalPlayer.Data.Race.Value
+            Level = game:GetService("Players").LocalPlayer.Data.Level.Value
+
+            local placeId = game.PlaceId
+            if placeId == 2753915549 then
+                World = "1"
+            elseif placeId == 4442272183 then
+                World = "2"
+            elseif placeId == 7449423635 then
+                World = "3"
+            end
+
+            RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+                for i, __ in pairs(RequestgetInventory) do
+                    if __["Type"] == "Sword" then
+                        if Sword == "" then
+                            if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
+                                if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
                                     Sword = __["Name"] .. " "
                                 end
                             else
-                                if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
-                                    if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                        Sword = Sword .. __["Name"] .. ", "
-                                    end
-                                else
-                                    Sword = Sword .. __["Name"] .. ", "
-                                end
+                                Sword = __["Name"] .. " "
                             end
-                        end
-                        if __["Type"] == "Wear" then
-                            if Accesorry == "" then
-                                Accesorry = __["Name"] .. " "
-                            else
-                                Accesorry = Accesorry .. __["Name"] .. " "
-                            end
-                        end
-                        if __["Type"] == "Blox Fruit" then
-                            if Fruit == "" then
-                                if _G.ShowLegendary then
-                                    if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                                        Fruit = __["Name"] 
-                                    end
-                                else
-                                    Fruit = __["Name"] 
-                                end
-                            else
-                                if _G.ShowLegendary then
-                                    if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                                        Fruit = Fruit .." \n"..__["Name"] 
-                                    end
-                                else
-                                    Fruit = Fruit .. " \n"..__["Name"] 
-                                end
-                            end
-                        end
-                        if __["Type"] == "Material" then
-                            if Material == "" then
-                                Material = __["Name"] .. " "
-                            else
-                                Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
-                            end
-                        end
-                        if __["Type"] == "Gun" then
-                            if Gun == "" then
-                                Gun = __["Name"] .. " "
-                            else
-                                Gun = Gun .. __["Name"] .. " "
-                            end
-                        end
-                    end
-
-
-                    local args = {[1] = "BuyDeathStep",[2] = true}
-                    DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if DeathStep == 1 then
-                        HasDeathStep = true
-                    else
-                        HasDeathStep = false
-                    end
-                    wait(0.2)
-        
-
-                    local args = {[1] = "BuySharkmanKarate",[2] = true}
-                    SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if SharkmanKarate == 1 then
-                        HasSharkmanKarate = true
-                    end
-                    wait(0.2)
-        
-
-                    local args = {[1] = "BuySuperhuman",[2] = true}
-                    Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if Superhuman == 1 then
-                        HasSuperhuman = true
-                    else
-                        HasSuperhuman = false
-                    end
-                    wait(0.2)
-        
-
-                    local args = {
-                        [1] = "BuyElectricClaw",
-                        [2] = true
-                    }
-        
-                    ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if ElectricClaw == 1 then
-                        HasElectricClaw = true
-                    else
-                        HasElectricClaw = false
-                    end
-                    local args = {
-                        [1] = "BuyDragonTalon",
-                        [2] = true
-                    }
-        
-                    DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(DragonTalon) == "number" then
-                        if DragonTalon == 1 then
-                            HasDragonTalon = true
                         else
-                            HasDragonTalon = false
-                        end
-                    end
-        
-                    local args = {
-                        [1] = "BuyGodhuman",
-                        [2] = true
-                    }
-                    Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(Godhuman) == "number" then
-                        if Godhuman == 1 then
-                            HasGodhuman = true
-                        else
-                            HasGodhuman = false
-                        end
-                    end
-                    MeleeCount = 0
-                    if HasGodhuman then
-                        Malee = Malee .. "Godhuman, "
-                        MeleeCount = MeleeCount + 1
-                    end
-                    if HasSuperhuman then
-                        Malee = Malee .. "Superhuman, "
-                        MeleeCount = MeleeCount + 1
-                    end
-                    if HasElectricClaw then
-                        Malee = Malee .. "ElectricV2, "
-                        MeleeCount = MeleeCount + 1
-                    end
-                    if HasDragonTalon then
-                        Malee = Malee .. "DragonV2, "
-                        MeleeCount = MeleeCount + 1
-                    end
-                    if HasDeathStep then
-                        Malee = Malee .. "DeathStepV2, "
-                        MeleeCount = MeleeCount + 1
-                    end
-                    if HasSharkmanKarate then
-                        Malee = Malee .. "SharkmanV2"
-                        MeleeCount = MeleeCount + 1
-                    end
-                    for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v:IsA("Tool") then
-                            if v.ToolTip == "Blox Fruit" then
-                                FruitMastery = v.Level.Value
-                                FruitName = v.Name
-                            end
-                        end
-                    end
-                    r = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
-                    if r then
-                        for i, v in pairs(r) do
-                            if v["Awakened"] then
-                                Awake = Awake .. i .. " "
-                            end
-                        end
-                    else
-                        Awake = "None"
-                    end
-                    if game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved") then
-                        Evo = ""
-                    else
-                        Evo = "No"
-                    end
-                    function GetWeaponInventory(Weaponname)
-                        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-                            if v.Type == "Sword" then
-                                if v.Name == Weaponname then
-                                    return true
+                            if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
+                                if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
+                                    Sword = Sword..", ".. __["Name"]
                                 end
+                            else
+                                Sword = Sword..", ".. __["Name"]
                             end
                         end
                     end
-                    if GetWeaponInventory("Cursed Dual Katana") then
-                        CDKYed = true
-                     end
-                     if GetWeaponInventory("Hallow Scythe") == true then
-                        HSYed = true
+                    if __["Type"] == "Wear" then
+                        if Accesorry == "" then
+                            Accesorry = __["Name"] .. " "
+                        else
+                            Accesorry = Accesorry .. __["Name"] .. " "
                         end
-                     if GetWeaponInventory("Dark Dagger") == true then
-                         DDGYed = true
-                         end
-                         if GetWeaponInventory("Yama") == true then
-                            YMYed = true
+                    end
+                    if __["Type"] == "Blox Fruit" then
+                        if Fruit == "" then
+                            if _G.ShowLegendary then
+                                if __["Rarity"] == 3 or __["Rarity"] == 4  then
+                                    Fruit = __["Name"] .. ","
+                                end
+                            else
+                                Fruit = __["Name"] .. ","
                             end
-                     if GetWeaponInventory("Tushita") == true then
-                      TSYed = true
-                      end
-                     if GetWeaponInventory("True Triple Katana") == true then
-                     TTKYed = true
-                     end
+                        else
+                            if _G.ShowLegendary then
+                                if __["Rarity"] == 3 or __["Rarity"] == 4 then
+                                    Fruit = Fruit .. __["Name"] .. ","
+                                end
+                            else
+                                Fruit = Fruit .. __["Name"] .. ","
+                            end
+                        end
+                    end
+                    if __["Type"] == "Material" then
+                        if Material == "" then
+                            Material = __["Name"] .. " "
+                        else
+                            Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
+                        end
+                    end
+                    if __["Type"] == "Gun" then
+                        if Gun == "" then
+                            Gun = __["Name"] .. " "
+                        else
+                            Gun = Gun .. __["Name"] .. " "
+                        end
+                    end
+                end
+
+                local args = {[1] = "BuyDeathStep",[2] = true}
+                DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if DeathStep == 1 then
+                    HasDeathStep = true
+                else
+                    HasDeathStep = false
+                end
+                wait(0.2)
+                
         
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i,x in pairs(RequestgetInventory) do
-                          if x["Type"] == "Gun" then
-                              if x["Name"] == "Soul Guitar" then
-                                SGYed = true
-                             
-                              end
-                          end
-                     end  
-                     Awaked = S
-                     HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
-                     if HHH then
-                      S = 0	
-                   for i, v in pairs(HHH) do
-                       if v["Awakened"] then
-                        S = S + 1
-                           end
-                   end
-                   else
-                       S = 0
-                   end
-                   AwakeLimitsStatus = 5
-                   AwakedStat = ""
-                    if CurrentFruitName == 'Dough' then
-                        AwakeLimitsStatus = 6
-                        if S == 6 then Awaked = "Full" end
-                    else 
-                        if S == 5 then
-                            Awaked = "Full "
-                        end
-                    end 
-
-                    if CurrentFruitName == "Dough" then
-                        if S == 6 then
-                            AwakedStat = "F."
-                        end
-                    elseif CurrentFruitName == "Quake" then
-                        if S == 4 then
-                            AwakedStat = "F."
-                        end
+                local args = {[1] = "BuySharkmanKarate",[2] = true}
+                SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if SharkmanKarate == 1 then
+                    HasSharkmanKarate = true
+                else
+                    HasSharkmanKarate = false
+                end
+                wait(0.2)
+                
+                
+                local args = {[1] = "BuySuperhuman",[2] = true}
+                Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if Superhuman == 1 then
+                    HasSuperhuman = true
+                else
+                    HasSuperhuman = false
+                end
+                wait(0.2)
+                
+                
+                local args = {[1] = "BuyElectricClaw",[2] = true}  
+                ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if ElectricClaw == 1 then
+                    HasElectricClaw = true
+                else
+                    HasElectricClaw = false
+                end
+                wait(0.2)
+        
+        
+                local args = {[1] = "BuyDragonTalon",[2] = true}
+                DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if type(DragonTalon) == "number" then
+                    if DragonTalon == 1 then
+                        HasDragonTalon = true
                     else
-                        if S == 5 then
-                            AwakedStat = "F."
-                        end
+                        HasDragonTalon = false
                     end
+                end
+                wait(0.2)
+        
+        
+                local args = {[1] = "BuyGodhuman",[2] = true}
+                Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                if type(Godhuman) == "number" then
+                    if Godhuman == 1 then
+                        HasGodhuman = true
+                    else
+                        HasGodhuman = false
+                    end
+                end
 
+            if HasGodhuman then
+                Malee = Malee .. "GodHuman, "
+            end
+            if HasSuperhuman then
+                Malee = Malee .. "Superhuman, "
+            end
+            if HasElectricClaw then
+                Malee = Malee .. "ElericV2, "
+            end
+            if HasDragonTalon then
+                Malee = Malee .. "DragonV2, "
+            end
+            if HasDeathStep then
+                Malee = Malee .. "DeathStepV2, "
+            end
+            if HasSharkmanKarate then
+                Malee = Malee .. "SharkManV2"
+            end
 
-                     HeeDes = ""
-                     if _G.HeeBF["Log Mode"] == "Normal" then
-                        HeeDes = HeeDes..World.." "..AwakedStat..CurrentFruitName.." ⪼ L: "..Level.." M: "..Money.." F: "..Fragment.." \nMelee: "..Malee.."\n".."Fruit Inventory: \n"..Fruit.."\nInventory: "..Sword
-                     end
-                        
-                    
-                        Request(
-                        {
-                            Method = "POST",
-                            Url = "http://localhost:7963/SetDescription?Account=" .. Username,
-                            Body = HeeDes
-                        }
-                    )
+            local MC = 0
+            if HasGodhuman then MC = MC + 1 end
+            if HasSuperhuman then MC = MC + 1 end
+            if HasElectricClaw then MC = MC + 1 end
+            if HasDragonTalon then MC = MC + 1 end
+            if HasDeathStep then MC = MC + 1 end
+            if HasSharkmanKarate then MC = MC + 1 end
+
+            if game:GetService("Players").LocalPlayer.Data.DevilFruit.Value == '' then
+                FruitMastery = "None"
+                FruitName = "N/A"
+            else
+
+            for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if v:IsA("Tool") then
+                    if v.ToolTip == "Blox Fruit" then
+                        FruitMastery = v.Level.Value
+                        FruitName = v.Name
+                    end
                 end
             end
-        )
+            end
 
-
-
-
-
-
-
-
-
-        spawn(
-            function()
-                while wait(5) do
-                    local Username = game.Players.LocalPlayer.Name
-                    local args = {
-                        [1] = "BuyDeathStep",
-                        [2] = true
-                    }
-        
-                    DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if DeathStep == 1 then
-                        HasDeathStep = true
-                    else
-                        HasDeathStep = false
+            HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
+            if HHH then
+            S = 0	
+                for i, v in pairs(HHH) do
+                    if v["Awakened"] then
+                    S = S + 1
                     end
-                    wait(0.2)
-        
-                    local args = {
-                        [1] = "BuySharkmanKarate",
-                        [2] = true
-                    }
-        
-                    SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if SharkmanKarate == 1 then
-                        HasSharkmanKarate = true
-                    end
-                    wait(0.2)
-        
-                    local args = {
-                        [1] = "BuySuperhuman",
-                        [2] = true
-                    }
-        
-                    Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if Superhuman == 1 then
-                        HasSuperhuman = true
-                    else
-                        HasSuperhuman = false
-                    end
-                    wait(0.2)
-        
-                    local args = {
-                        [1] = "BuyElectricClaw",
-                        [2] = true
-                    }
-        
-                    ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if ElectricClaw == 1 then
-                        HasElectricClaw = true
-                    else
-                        HasElectricClaw = false
-                    end
-                    local args = {
-                        [1] = "BuyDragonTalon",
-                        [2] = true
-                    }
-        
-                    DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(DragonTalon) == "number" then
-                        if DragonTalon == 1 then
-                            HasDragonTalon = true
-                        else
-                            HasDragonTalon = false
-                        end
-                    end
-        
-                    local args = {
-                        [1] = "BuyGodhuman",
-                        [2] = true
-                    }
-                    local FruitName = ""
-                    Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(Godhuman) == "number" then
-                        if Godhuman == 1 then
-                            HasGodhuman = true
-                        else
-                            HasGodhuman = false
-                        end
-                    end
-                    
-                    HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
-                      if HHH then
-                       S = 0	
-                           for i, v in pairs(HHH) do
-                             if v["Awakened"] then
-                                 S = S + 1
-                            end
-                    end
-                    else
-                        S = "0"
-                    end
-                    StatusAwake = ""
-        
-                        StatusAwake = "Awaked".."{"..S.."}"
-        
-                    function GetWeaponInventory(Weaponname)
-                        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
-                            if v.Type == "Sword" then
-                                if v.Name == Weaponname then
-                                    return true
-                                end
-                            end
-                        end
-                    end
-                    if GetWeaponInventory("Cursed Dual Katana") then
-                        CDKYed = true
+                end
+            else
+                S = 0
+            end
+            
+            local Type = ""
+            RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+            for i, __ in pairs(RequestgetInventory) do
+                if __["Type"] == "Sword" then
+                    if __["Name"] == "Cursed Dual Katana" then
+                        CDKHas = true
                      end
-                    if GetWeaponInventory("Hallow Scythe") then
-                        HS = true
-                    end
-                    if GetWeaponInventory("Dark Dagger") then
+                end
+            end
+
+            RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+            for i, __ in pairs(RequestgetInventory) do
+                if __["Type"] == "Sword" then
+                    if __["Name"] == "Dark Dagger" then
                         DDG = true
                     end
-                    
-                    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i,x in pairs(RequestgetInventory) do
-                          if x["Type"] == "Gun" then
-                              if x["Name"] == "Soul Guitar" then
-                                SG = true
-                             
-                              end
-                          end
-                     end
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i, __ in pairs(RequestgetInventory) do
-                         if __["Type"] == "Sword" then
-                             if __["Name"] == "Cursed Dual Katana" then
-                                 CDKHas = true
-                             end
-                         end
-                     end
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i, __ in pairs(RequestgetInventory) do
-                         if __["Type"] == "Sword" then
-                             if __["Name"] == "Tushita" then
-                                 TSHas = true
-                             end
-                         end
-                     end
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i, __ in pairs(RequestgetInventory) do
-                         if __["Type"] == "Sword" then
-                             if __["Name"] == "Yama" then
-                                 YMHAS = true
-                             end
-                         end
-                     end
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i, __ in pairs(RequestgetInventory) do
-                         if __["Type"] == "Sword" then
-                             if __["Name"] == "Hallow Scythe" then
-                                 HSHas = true
-                             end
-                         end
-                     end
-                     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                     for i,x in pairs(RequestgetInventory) do
-                          if x["Type"] == "Gun" then
-                              if x["Name"] == "Soul Guitar" then
-                                SGJJJ = true
-                              end
-                          end
-                     end 
+                end
+            end
+ 
 
-                 for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
-                    if  v.Name == "Valkyrie Helm" then
-                        Helmed = true
-                    end
-                end
-
-                RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                for i,x in pairs(RequestgetInventory) do
-                     if x["Type"] == "Gun" then
-                         if x["Name"] == "Soul Guitar" then
-                           SGQQQ = true
-                        
-                         end
-                     end
-                end  
-                
-                if CDKHas then
-                    CDK = true
-                end
-                if HasSuperhuman  then
-                   OneMalee = true
-                end
-                if HasSuperhuman and HasDeathStep  then
-                   TwoMalee = true
-                end
-                if HasSuperhuman and HasDeathStep and HasSharkmanKarate then
-                   ThreeMalee = true
-                end 
-                if HasSuperhuman and HasDeathStep and HasSharkmanKarate and HasElectricClaw then
-                   FourMalee = true
-                 end
-                if HasSuperhuman and HasDeathStep and HasSharkmanKarate and HasElectricClaw and HasDragonTalon then
-                   FiveMalee = true
-                end
-                if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
-                    SixMalee = true
-                end 
-                
-                Doughh = game:GetService("Players").LocalPlayer.Data.DevilFruit.Value
-                if Doughh == "Dough-Dough" then
-                    Moji = true
-                end
-                af = S == 6
-                
-                local showraceSave = ""
-                local THrace = ""
-                local Racee = game.Players.LocalPlayer.Data.Race.Value
-                local RaceV2 = game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved")
-                local RaceV4 = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Awakening")
-                local Ghoull = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heightened Senses")
-                local Angell = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heavenly Blood")
-                local Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
-                local Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
-                local Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
-                local Cybrogg = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Energy Core")
-    
-                if Racee == "Human" then
-                    THrace = "มนุษย์ "
-                elseif Racee == "Mink" then
-                    THrace = "มิ้ง "
-                elseif Racee == "Skypiea" then
-                    THrace = "นางฟ้า "
-                elseif Racee == "Fishman" then
-                    THrace = "เงือก "
-                elseif Racee == "Cybrog" then
-                    THrace = "ไซบ็อก "
-                elseif Racee == "Ghoul" then
-                    THrace = "กูล "
-                end
-    
-                if RaceV4 then
-                    showrace = THrace .."v4👑"
-                elseif Humann then
-                    showrace = THrace .."v3"
-                elseif Minkk then
-                    showrace = THrace .."v3"
-                elseif Angell then
-                    showrace = THrace.."v3"
-                elseif Sharkk then
-                    showrace = THrace.."v3"
-                elseif Cybrogg  then
-                    showrace = THrace.."v3"
-                elseif Ghoull then
-                    showrace = THrace.."v3"
-                elseif RaceV2 then 
-                    showrace = THrace.."V2"
-                else
-                    showrace = THrace.."V1"
-                end
-
-
-                HeeDes = ""
-                if _G.HeeBF["Log Mode"] == "Normal" then
-                    HeeDes = HeeDes.."[ "                
-                    if SixMalee and Moji and af and CDK then
-                        HeeDes = HeeDes .. "โมตื่นดาบคู่  "..showrace
-                    elseif SixMalee and CDK and Moji then
-                        HeeDes = HeeDes .. "โมไม่ตื่นดาบคู่  "..showrace
-                    elseif SixMalee and Moji and af  then
-                        HeeDes = HeeDes .. "โมตื่น6หมัด  "..showrace
-                    elseif SixMalee and Moji then
-                        HeeDes = HeeDes .. "โมไม่ตื่น6หมัด  "..showrace
-                    elseif SixMalee and CDK then
-                        HeeDes = HeeDes .. "ดาบคู่  "..showrace
+            if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
+                SixMalee = true
+            end
+            if _G.HeeBF["Sheet language"] == 1 then
+                    if DDG and CDKHas and S == 6 then
+                        Type = "รวมมิตร"
+                    elseif CDKHas and S == 6 then
+                        Type = "โมจิตื่นดาบคู่"
+                    elseif S == 6 then 
+                        Type = "โมจิตื่น"    
+                    elseif CDKHas then
+                        Type = "ดาบคู่"
                     elseif SixMalee then
-                        HeeDes = HeeDes .. "6หมัด  "..showrace
-                
-                    elseif FiveMalee and Moji and af and CDK then
-                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-                    elseif FiveMalee and CDK and Moji then
-                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-                    elseif FiveMalee and Moji and af  then
-                        HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นครบ🎂"
-                    elseif FiveMalee and Moji then
-                        HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
-                    elseif FiveMalee and CDK then
-                        HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️"
-                    elseif FiveMalee then
-                        HeeDes = HeeDes .. "5หมัด👊"   
-                        
-                    elseif FourMalee and Moji and af and CDK then
-                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-                    elseif FourMalee and CDK and Moji then
-                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-                    elseif FourMalee and Moji and af  then
-                        HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นครบ🎂"
-                    elseif FourMalee and Moji then
-                        HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
-                    elseif FourMalee and CDK then
-                        HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️"
-                    elseif FourMalee then
-                        HeeDes = HeeDes .. "4หมัด👊"   
-                        
-                    elseif ThreeMalee and Moji and af and CDK then
-                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-                    elseif ThreeMalee and CDK and Moji then
-                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-                    elseif ThreeMalee and Moji and af  then
-                        HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นครบ🎂"
-                    elseif ThreeMalee and Moji then
-                        HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
-                    elseif ThreeMalee and CDK then
-                        HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️"
-                    elseif ThreeMalee then
-                        HeeDes = HeeDes .. "3หมัด👊" 
-                        
-                    elseif TwoMalee then
-                        HeeDes = HeeDes .. "ไก่กาก2หมัด👊"
-                    elseif OneMalee then 
-                        HeeDes = HeeDes .. "ไก่กาก1หมัด👊"  
-                    end
-                    HeeDes = HeeDes.." ]"              
-
-                end
-                Request(
-                        {
-                            Method = "POST",
-                            Url = "http://localhost:7963/SetAlias?Account=" .. Username,
-                            Body = HeeDes
-                        }
-                    )
-                end
-        
-        end)
-
-
-
-
-
-
-
-
-
-
-
-
-
-        spawn(function()
-            while true do wait()
-                pcall(function()
-                    local World = ""
-                    local Money = ""
-                    local Username = game.Players.LocalPlayer.Name
-                    local Fragment = ""
-                    local Level = ""
-                    local Fruit = ""
-                    local Material = ""
-                    local Race = ""
-                    local FruitMastery = "N/A"
-                    local FruitName = "N/A"
-                    local Gun = ""
-                    local RequestgetInventory
-                    local HttpService = game:GetService("HttpService")
-                    local Malee = ""
-                    local Sword = ""
-                    local Accesorry = ""
-                    local Awake = ""
-                    local Combo = ""
-                    local MFStatus = "❌"
-                    local HelmedStatus = "❌"
-                    local function formatNumber(number)
-                        local i, k, j = tostring(number):match("(%-?%d?)(%d*)(%.?.*)")
-                        return i .. k:reverse():gsub("(%d%d%d)", "%1,"):reverse() .. j
-                    end
-                    local function notifyCheck(types, ...)
-                        if types == "Notify" then
-                            require(game.ReplicatedStorage.Notification).new(...):Display()
-                        end
-                    end
-                    for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
-                        if  v.Name == "Valkyrie Helm" then
-                            Helmed = true
-                        end
-                    end
-                    w = 0
-                
-                    function format_number_(n)
-                        local x = n
-                        local res = x:gsub(",","")
-                        return tonumber(res)
-                    end
-                    
-                    function foo(n)
-                        if n >= 10^6 then
-                            return string.format("%.0fM", n / 10^6)
-                        elseif n >= 10^3 then
-                            return string.format("%.0fK", n / 10^3)
-                        else
-                            return tostring(n)
-                        end
-                    end
-                
-                    Money = foo(format_number_(formatNumber(game:GetService("Players").LocalPlayer.Data.Beli.Value)))
-                    Fragment = foo(game:GetService("Players").LocalPlayer.Data.Fragments.Value)
-                    Race = game:GetService("Players").LocalPlayer.Data.Race.Value
-                    Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-                
-                    local placeId = game.PlaceId
-                    if placeId == 2753915549 then
-                        World = "1"
-                    elseif placeId == 4442272183 then
-                        World = "2"
-                    elseif placeId == 7449423635 then
-                        World = "3"
-                    end
-                
-                   RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i, __ in pairs(RequestgetInventory) do
-                            if __["Type"] == "Sword" then
-                                if Sword == "" then
-                                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
-                                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                            Sword = __["Name"] .. " "
-                                        end
-                                    else
-                                        Sword = __["Name"] .. " "
-                                    end
-                                else
-                                    if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
-                                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                            Sword = Sword..", ".. __["Name"]
-                                        end
-                                    else
-                                        Sword = Sword..", ".. __["Name"]
-                                    end
-                                end
-                            end
-                            if __["Type"] == "Wear" then
-                                if Accesorry == "" then
-                                    Accesorry = __["Name"] .. " "
-                                else
-                                    Accesorry = Accesorry .. __["Name"] .. " "
-                                end
-                            end
-                            if __["Type"] == "Blox Fruit" then
-                                if Fruit == "" then
-                                    if _G.ShowLegendary then
-                                        if __["Rarity"] == 3 or __["Rarity"] == 4  then
-                                            Fruit = __["Name"] .. ","
-                                        end
-                                    else
-                                        Fruit = __["Name"] .. ","
-                                    end
-                                else
-                                    if _G.ShowLegendary then
-                                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                                            Fruit = Fruit .. __["Name"] .. ","
-                                        end
-                                    else
-                                        Fruit = Fruit .. __["Name"] .. ","
-                                    end
-                                end
-                            end
-                            if __["Type"] == "Material" then
-                                if Material == "" then
-                                    Material = __["Name"] .. " "
-                                else
-                                    Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
-                                end
-                            end
-                            if __["Type"] == "Gun" then
-                                if Gun == "" then
-                                    Gun = __["Name"] .. " "
-                                else
-                                    Gun = Gun .. __["Name"] .. " "
-                                end
-                            end
-                        end
-                    local args = {
-                        [1] = "BuyDeathStep",
-                        [2] = true
-                    }
-                
-                    DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if DeathStep == 1 then
-                        HasDeathStep = true
+                        Type = "6หมัด"
                     else
-                        HasDeathStep = false
+                        Type = "ไก่กากน่าสมเพช"
                     end
-                    wait(0.2)
-                
-                    local args = {
-                        [1] = "BuySharkmanKarate",
-                        [2] = true
-                    }
-                
-                    SharkmanKarate = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if SharkmanKarate == 1 then
-                        HasSharkmanKarate = true
-                    else
-                        HasSharkmanKarate = false
-                    end
-                    wait(0.2)
-                
-                    local args = {
-                        [1] = "BuySuperhuman",
-                        [2] = true
-                    }
-                
-                    Superhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if Superhuman == 1 then
-                        HasSuperhuman = true
-                    else
-                        HasSuperhuman = false
-                    end
-                    wait(0.2)
-                
-                    local args = {
-                        [1] = "BuyElectricClaw",
-                        [2] = true
-                    }
-                
-                    ElectricClaw = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if ElectricClaw == 1 then
-                        HasElectricClaw = true
-                    else
-                        HasElectricClaw = false
-                    end
-                    local args = {
-                        [1] = "BuyDragonTalon",
-                        [2] = true
-                    }
-                
-                    DragonTalon = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(DragonTalon) == "number" then
-                        if DragonTalon == 1 then
-                            HasDragonTalon = true
-                        else
-                            HasDragonTalon = false
+
+                elseif _G.HeeBF["Sheet language"] == 2 then
+                        if MC == 6 then
+                            Type = "6 หมัด"
                         end
-                    end
-                
-                    local args = {
-                        [1] = "BuyGodhuman",
-                        [2] = true
-                    }
-                    Godhuman = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    if type(Godhuman) == "number" then
-                        if Godhuman == 1 then
-                            HasGodhuman = true
-                        else
-                            HasGodhuman = false
+                        if CDKHas == true then 
+                            Type = "ดาบคู่"    
                         end
-                    end
-                    if HasGodhuman then
-                        Malee = Malee .. "GodHuman, "
-                    end
-                    if HasSuperhuman then
-                        Malee = Malee .. "Superhuman, "
-                    end
-                    if HasElectricClaw then
-                        Malee = Malee .. "ElericV2, "
-                    end
-                    if HasDragonTalon then
-                        Malee = Malee .. "DragonV2, "
-                    end
-                    if HasDeathStep then
-                        Malee = Malee .. "DeathStepV2, "
-                    end
-                    if HasSharkmanKarate then
-                        Malee = Malee .. "SharkManV2"
-                    end
-    
-                    local MC = 0
-                    if HasGodhuman then MC = MC + 1 end
-                    if HasSuperhuman then MC = MC + 1 end
-                    if HasElectricClaw then MC = MC + 1 end
-                    if HasDragonTalon then MC = MC + 1 end
-                    if HasDeathStep then MC = MC + 1 end
-                    if HasSharkmanKarate then MC = MC + 1 end
-    
-                    if game:GetService("Players").LocalPlayer.Data.DevilFruit.Value == '' then
-                        FruitMastery = "None"
-                        FruitName = "N/A"
-                    else
-                
-                    for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v:IsA("Tool") then
-                            if v.ToolTip == "Blox Fruit" then
-                                FruitMastery = v.Level.Value
-                                FruitName = v.Name
-                            end
+                        if S == 6 then
+                            Type = "โมจิตื่น"
                         end
-                    end
-                end
-                
-                HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
-                if HHH then
-                 S = 0	
-                for i, v in pairs(HHH) do
-                  if v["Awakened"] then
-                   S = S + 1
-                      end
-                end
+                        if S == 6 and CDKHas == true then
+                            Type = "โมจิตื่น & ดาบคู่"  
+                        end
+                        if MC < 6 then
+                            Type = "3-5 หมัด"
+                        end
+            if GetMaterial("Mirror Fractal") == true then
+                MFStatus = "✅"
+            end
+            if Helmed == true then
+                HelmedStatus = "✅"
+            end
+
+
+
+
+            elseif _G.HeeBF["Sheet Modes"] == 2 then
+                MainInFoModes2 = ""
+                CDKCheck = "❌"
+                SGCheck = "❌"
+                HSChck = "❌"
+                TSCheck = "❌"
+                YMCheck = "❌"
+            if _G.HeeBF["Sheet language"] == 1 then
+                if HasGodhuman then
+                    MainInFoModes2 = "Godhuman"
                 else
-                  S = 0
+                    MainInFoModes2 = "Trash"
                 end
-                    local Type = ""
-                    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i, __ in pairs(RequestgetInventory) do
-                            if __["Type"] == "Sword" then
-                                if __["Name"] == "Cursed Dual Katana" then
-                                    CDKHas = true
-                                end
-                            end
-                        end
-                        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i, __ in pairs(RequestgetInventory) do
-                            if __["Type"] == "Sword" then
-                                if __["Name"] == "Tushita" then
-                                    TSHas = true
-                                end
-                            end
-                        end
-                        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i, __ in pairs(RequestgetInventory) do
-                            if __["Type"] == "Sword" then
-                                if __["Name"] == "Yama" then
-                                    YMHAS = true
-                                end
-                            end
-                        end
-                        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i, __ in pairs(RequestgetInventory) do
-                            if __["Type"] == "Sword" then
-                                if __["Name"] == "Hallow Scythe" then
-                                    HSHas = true
-                                end
-                            end
-                        end
-                        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-                        for i,x in pairs(RequestgetInventory) do
-                             if x["Type"] == "Gun" then
-                                 if x["Name"] == "Soul Guitar" then
-                                   SGJJJ = true
-                                 end
-                             end
-                        end 
-
-                        if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
-                            SixMalee = true
-                        end
-
-                    if _G.HeeBF["Sheet language"] == 1 then
-                            if DDG and CDKHas and S == 6 then
-                                Type = "รวมมิตร"
-                            elseif CDKHas and S == 6 then
-                                Type = "โมจิตื่นดาบคู่"
-                            elseif S == 6 then 
-                                Type = "โมจิตื่น"    
-                            elseif CDKHas then
-                                Type = "ดาบคู่"
-                            elseif SixMalee then
-                                Type = "6หมัด"
-                            else
-                                Type = "ไก่กากน่าสมเพช"
-                            end
-
-                        elseif _G.HeeBF["Sheet language"] == 2 then
-                                if MC == 6 then
-                                    Type = "6 หมัด"
-                                end
-                                if CDKHas == true then 
-                                    Type = "ดาบคู่"    
-                                end
-                                if S == 6 then
-                                    Type = "โมจิตื่น"
-                                end
-                                if S == 6 and CDKHas == true then
-                                    Type = "โมจิตื่น & ดาบคู่"  
-                                end
-                                if MC < 6 then
-                                    Type = "3-5 หมัด"
-                                end
-                       if GetMaterial("Mirror Fractal") == true then
-                        MFStatus = "✅"
-                       end
-                       if Helmed == true then
-                        HelmedStatus = "✅"
-                       end
-
-
-
-
-                    elseif _G.HeeBF["Sheet Modes"] == 2 then
-                        MainInFoModes2 = ""
-                        CDKCheck = "❌"
-                        SGCheck = "❌"
-                        HSChck = "❌"
-                        TSCheck = "❌"
-                        YMCheck = "❌"
-                    if _G.HeeBF["Sheet language"] == 1 then
-                        if HasGodhuman then
-                            MainInFoModes2 = "Godhuman"
-                        else
-                            MainInFoModes2 = "Trash"
-                        end
-                    elseif _G.HeeBF["Sheet language"] == 2 then
-                        if HasGodhuman then
-                            MainInFoModes2 = "6 หมัด"
-                        else
-                            MainInFoModes2 = "ไก่ขยะ"
-                        end
-                    end
-    
-                
-                        if CDKHas then
-                            CDKCheck = "✅"
-                        end
-                        if SGJJJ then
-                            SGCheck = "✅"
-                        end
-                        if HSHas then
-                            HSChck = "✅"
-                        end
-                        if TSHas then
-                            TSCheck = "✅"
-                        end
-                        if YMHAS then
-                            YMCheck = "✅"
-                        end
-                        if GetMaterial("Mirror Fractal") == true then
-                            MFStatus = "✅"
-                           end
-                           if Helmed == true then
-                            HelmedStatus = "✅"
-                           end
-                       end    
-                
-                local str = Fruit
-                local result = {}
-                for word in string.gmatch(str, "%a+") do
-                local found = false
-                for i, v in ipairs(result) do
-                if v == word then
-                  found = true
-                  break
-                end
-                end
-                if not found then
-                table.insert(result, word)
-                end
-                end
-                
-                local NewFruitNameInven = table.concat(result, ", ")
-                function GetAwaken()
-                if S == 1 then
-                    return "Z"
-                elseif S ==2 then
-                    return "Z, X"
-                elseif S ==3  then
-                    return "Z, X, C"
-                elseif S == 4 then
-                    return "Z X, C, V"
-                elseif S == 5 then
-                    return "Z, X, C, V, F"
-                elseif S == 6  then
-                    return "Z, X, C, V, F, Tap"
+            elseif _G.HeeBF["Sheet language"] == 2 then
+                if HasGodhuman then
+                    MainInFoModes2 = "6 หมัด"
                 else
-                    return "None"
+                    MainInFoModes2 = "ไก่ขยะ"
                 end
-                end
-                if CurrentFruitName == "" then
-                    
-                end
-                local folders = {
-                "Hee Service/AutoSaveDes",
-                }
-                for _, folder in ipairs(folders) do
-                    if not isfolder(folder) then
-                        makefolder(folder)
-                    end
-                end
+            end
 
-                local showraceSave = ""
-                local THrace = ""
-                local Raceee = game.Players.LocalPlayer.Data.Race.Value
-                local RaceV2 = game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved")
-                local RaceV4 = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Awakening")
-                local Ghoull = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heightened Senses")
-                local Angell = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heavenly Blood")
-                local Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
-                local Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
-                local Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
-                local Cybrogg = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Energy Core")
-    
-                if Raceee == "Human" then
-                    THrace = "มนุษย์"
-                elseif Raceee == "Mink" then
-                    THrace = "มิ้ง"
-                elseif Raceee == "Skypiea" then
-                    THrace = "นางฟ้า"
-                elseif Raceee == "Fishman" then
-                    THrace = "เงือก"
-                elseif Raceee == "Cybrog" then
-                    THrace = "ไซบ็อก"
-                elseif Raceee == "Ghoul" then
-                    THrace = "กูล"
-                end
-    
-                if RaceV4 then
-                    showraceSave = THrace .." V4👑"
-                elseif Humann then
-                    showraceSave = THrace .." V3"
-                elseif Minkk then
-                    showraceSave = THrace .." V3"
-                elseif Angell then
-                    showraceSave = THrace.." V3"
-                elseif Sharkk then
-                    showraceSave = THrace.." V3"
-                elseif Cybrogg  then
-                    showraceSave = THrace.." V3"
-                elseif Ghoull then
-                    showraceSave = THrace.." V3"
-                elseif RaceV2 then 
-                    showraceSave = THrace.." V2"
-                else
-                    showraceSave = THrace.." V1"
-                end
 
+                if CDKHas then
+                    CDKCheck = "✅"
+                end
+                if SGJJJ then
+                    SGCheck = "✅"
+                end
+                if HSHas then
+                    HSChck = "✅"
+                end
+                if TSHas then
+                    TSCheck = "✅"
+                end
+                if YMHAS then
+                    YMCheck = "✅"
+                end
                 if GetMaterial("Mirror Fractal") == true then
                     MFStatus = "✅"
                 end
                 if Helmed == true then
                     HelmedStatus = "✅"
                 end
-                local input_str = readfile("Hee Service/Enter Password.json")
-                local player_name = game.Players.LocalPlayer.Name 
-                local player_str = input_str:match(player_name .. ":%S+")
-            _G.SaveDesScription = {
-                Name = Username,
-                Password = player_str,
-                Sea = World,
-                Lvl = Level,
-                Fragments = Fragment,
-                Race = game:GetService("Players").LocalPlayer.Data.Race.Value,
-                Mirror = MFStatus,
-                Valkyrie = HelmedStatus,
-                Fruit = CurrentFruitName..' [ M. '.. FruitMastery..' ]',
-                AwakedSkill = GetAwaken(),
-                MainInfo = MainInFoModes2,
-                CDK = CDKCheck,
-                SoulGuitar = SGCheck,
-                HallowScythe = HSChck,
-                Tushita = TSCheck,
-                Yama = YMCheck,
-                FruitInventory = NewFruitNameInven,
-                TypeAccount = Type,
-                Bele = Money,
-                FightingStyle = Malee,
-                SwordInven = Sword,
-                ShowRaceSheet = showraceSave,
-            }
-                writefile("Hee Service/AutoSaveDes/".. game.Players.LocalPlayer.Name.. ".json", game:GetService("HttpService"):JSONEncode(_G.SaveDesScription))
-    
-                end)
+            end    
+
+            local str = Fruit
+            local result = {}
+            for word in string.gmatch(str, "%a+") do
+            local found = false
+            for i, v in ipairs(result) do
+            if v == word then
+            found = true
+            break
             end
+            end
+            if not found then
+            table.insert(result, word)
+            end
+            end
+
+            local NewFruitNameInven = table.concat(result, ", ")
+            function GetAwaken()
+            if S == 1 then
+            return "Z"
+            elseif S ==2 then
+            return "Z, X"
+            elseif S ==3  then
+            return "Z, X, C"
+            elseif S == 4 then
+            return "Z X, C, V"
+            elseif S == 5 then
+            return "Z, X, C, V, F"
+            elseif S == 6  then
+            return "Z, X, C, V, F, Tap"
+            else
+            return "None"
+            end
+            end
+            if CurrentFruitName == "" then
+
+            end
+            local folders = {
+            "Hee Service/AutoSaveDes",
+            }
+            for _, folder in ipairs(folders) do
+            if not isfolder(folder) then
+                makefolder(folder)
+            end
+            end
+
+            local showraceSave = ""
+            local THrace = ""
+            local Raceee = game.Players.LocalPlayer.Data.Race.Value
+            local RaceV2 = game:GetService("Players").LocalPlayer.Data.Race:FindFirstChild("Evolved")
+            local RaceV4 = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Awakening")
+            local Ghoull = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heightened Senses")
+            local Angell = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Heavenly Blood")
+            local Humann = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Last Resort")
+            local Minkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Agility")
+            local Sharkk = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Water Body")
+            local Cybrogg = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Energy Core")
+
+            if Raceee == "Human" then
+            THrace = "มนุษย์"
+            elseif Raceee == "Mink" then
+            THrace = "มิ้ง"
+            elseif Raceee == "Skypiea" then
+            THrace = "นางฟ้า"
+            elseif Raceee == "Fishman" then
+            THrace = "เงือก"
+            elseif Raceee == "Cybrog" then
+            THrace = "ไซบ็อก"
+            elseif Raceee == "Ghoul" then
+            THrace = "กูล"
+            end
+
+            if RaceV4 then
+            showraceSave = THrace .." V4👑"
+            elseif Humann then
+            showraceSave = THrace .." V3"
+            elseif Minkk then
+            showraceSave = THrace .." V3"
+            elseif Angell then
+            showraceSave = THrace.." V3"
+            elseif Sharkk then
+            showraceSave = THrace.." V3"
+            elseif Cybrogg  then
+            showraceSave = THrace.." V3"
+            elseif Ghoull then
+            showraceSave = THrace.." V3"
+            elseif RaceV2 then 
+            showraceSave = THrace.." V2"
+            else
+            showraceSave = THrace.." V1"
+            end
+
+            if GetMaterial("Mirror Fractal") == true then
+            MFStatus = "✅"
+            end
+            if Helmed == true then
+            HelmedStatus = "✅"
+            end
+            local input_str = readfile("Hee Service/Enter Password.json")
+            local player_name = game.Players.LocalPlayer.Name 
+            local player_str = input_str:match(player_name .. ":%S+")
+            _G.SaveDesScription = {
+            Name = Username,
+            Password = player_str,
+            Sea = World,
+            Lvl = Level,
+            Fragments = Fragment,
+            Race = game:GetService("Players").LocalPlayer.Data.Race.Value,
+            Mirror = MFStatus,
+            Valkyrie = HelmedStatus,
+            Fruit = CurrentFruitName..' [ M. '.. FruitMastery..' ]',
+            AwakedSkill = GetAwaken(),
+            MainInfo = MainInFoModes2,
+            CDK = CDKCheck,
+            SoulGuitar = SGCheck,
+            HallowScythe = HSChck,
+            Tushita = TSCheck,
+            Yama = YMCheck,
+            FruitInventory = NewFruitNameInven,
+            TypeAccount = Type,
+            Bele = Money,
+            FightingStyle = Malee,
+            SwordInven = Sword,
+            ShowRaceSheet = showraceSave,
+            }
+            writefile("Hee Service/AutoSaveDes/".. game.Players.LocalPlayer.Name.. ".json", game:GetService("HttpService"):JSONEncode(_G.SaveDesScription))
+
         end)
+    end
+end)
         
         
         _G.FilterItem = true
@@ -1875,7 +1721,7 @@ end)
                     for i,x in pairs(RequestgetInventory) do
                          if x["Type"] == "Sword" then
                              if x["Name"] == "Dark Dagger" then
-                               SGJJJ = true
+                               DDG = true
                              end
                          end
                     end
