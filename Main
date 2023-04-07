@@ -1,6 +1,8 @@
 _G.OnlyRareItemPlus = true
 _G.ShowLegendary = true
 _G.Delay = 6
+
+
 pcall(function()
     repeat wait()
         if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("Main").ChooseTeam.Visible == true then
@@ -10,7 +12,6 @@ pcall(function()
              end
     until game.Players.LocalPlayer.Team ~= nil and game:IsLoaded()
 end)
-
 
 Req = syn.request 
 User = game.Players.LocalPlayer.Name
@@ -24,6 +25,15 @@ Req({
     Url = "http://localhost:7963/SetDescription?Account=" ..User,
     Body = "Welcome to Hee Service"..os.date(': %H:%M:%S')
     })
+wait(2)
+if not isfolder("Hee Service") then
+    Req({
+        Method = "POST",
+        Url = "http://localhost:7963/SetDescription?Account=" ..User,
+        Body = "[ Please Disabled Anti-virus ]"
+        })
+end
+
 
 
 if not Nexus.IsConnected then
@@ -35,40 +45,58 @@ if not Nexus.IsConnected then
     Req({
         Method = "POST",
         Url = "http://localhost:7963/SetDescription?Account=" ..User,
-        Body = "Waiting Account Control"
+        Body = "[ Waiting Account Control ]"
         })
 end
 
 
+
 repeat task.wait() until Nexus.IsConnected
+
 local folders = {
-                "Hee Service"
-                }
+    "Hee Service"
+}
+
 for _, folder in ipairs(folders) do
     if not isfolder(folder) then
         makefolder(folder)
     end
 end
+
+
+
 if not isfile("Hee Service/Enter Password.json") then
     writefile("Hee Service/Enter Password.json", game:GetService("HttpService"):JSONEncode(''))
 end
+
+if not isfile("Hee Service/Enter Password.json") then
+    Req({
+        Method = "POST",
+        Url = "http://localhost:7963/SetDescription?Account=" ..User,
+        Body = "[ Please Disabled Anti-virus ]"
+        })
+end
+repeat task.wait() until isfile("Hee Service/Enter Password.json")
+
 function GetMaterial(matname)
     for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
         if type(v) == "table" then
             if v.Type == "Material" then
                 if v.Name == matname then
-                return true
+                    return true
                 end
             end
         end
     end
     return false
 end
+
 Req({
         Method = "POST",
         Url = "http://localhost:7963/SetDescription?Account=" ..  game.Players.LocalPlayer.Name,
-        Body = "LOADING SCRIPT"..os.date(': %H:%M:%S')
+        Body = "[ Loading Script"..os.date(': %H:%M:%S').." ]"
     })
+
 local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
 local Request = syn.request
 local function formatNumber(number)
@@ -102,16 +130,14 @@ spawn(function()
         local Accesorry = ""
         local Awake = ""
         local Combo = ""
-        local Evo = ""                    
+        local Evo = ""
+        local MFStatus = "❌"
+        local HelmedStatus = "❌"   
+
         function format_number_(n)
             local x = n
             local res = x:gsub(",","")
             return tonumber(res)
-        end
-        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
-            if  v.Name == "Valkyrie Helm" then
-                Helmed = true
-            end
         end
         function foo(n)
             if n >= 10^6 then
@@ -136,64 +162,64 @@ spawn(function()
         end
         
         RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-        for i, __ in pairs(RequestgetInventory) do
-            if __["Type"] == "Sword" then
+        for i, v in pairs(RequestgetInventory) do
+            if v["Type"] == "Sword" then
                 if Sword == "" then
                     if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
-                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                            Sword = __["Name"] .. " "
+                        if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                            Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                         end
                     else
-                        Sword = __["Name"] .. " "
+                        Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                     end
                 else
                     if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
-                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                            Sword = Sword .. __["Name"] .. ", "
+                        if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                            Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                         end
                     else
-                        Sword = Sword .. __["Name"] .. ", "
+                        Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                     end
                 end
             end
-            if __["Type"] == "Wear" then
+            if v["Type"] == "Wear" then
                 if Accesorry == "" then
-                    Accesorry = __["Name"] .. " "
+                    Accesorry = v["Name"] .. " "
                 else
-                    Accesorry = Accesorry .. __["Name"] .. " "
+                    Accesorry = Accesorry .. v["Name"] .. " "
                 end
             end
-            if __["Type"] == "Blox Fruit" then
+            if v["Type"] == "Blox Fruit" then
                 if Fruit == "" then
                     if _G.ShowLegendary then
-                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                            Fruit = __["Name"] 
+                        if v["Rarity"] == 3 or v["Rarity"] == 4 then
+                            Fruit = v["Name"] 
                         end
                     else
-                        Fruit = __["Name"] 
+                        Fruit = v["Name"] 
                     end
                 else
                     if _G.ShowLegendary then
-                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                            Fruit = Fruit .." \n"..__["Name"] 
+                        if v["Rarity"] == 3 or v["Rarity"] == 4 then
+                            Fruit = Fruit .." \n"..v["Name"] 
                         end
                     else
-                        Fruit = Fruit .. " \n"..__["Name"] 
+                        Fruit = Fruit .. " \n"..v["Name"] 
                     end
                 end
             end
-            if __["Type"] == "Material" then
+            if v["Type"] == "Material" then
                 if Material == "" then
-                    Material = __["Name"] .. " "
+                    Material = v["Name"] .. " "
                 else
-                    Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
+                    Material = Material .. v["Name"] .. "( x" .. v["Count"] .. " )" .. " "
                 end
             end
-            if __["Type"] == "Gun" then
+            if v["Type"] == "Gun" then
                 if Gun == "" then
-                    Gun = __["Name"] .. " "
+                    Gun = v["Name"] .. " "
                 else
-                    Gun = Gun .. __["Name"] .. " "
+                    Gun = Gun .. v["Name"] .. " "
                 end
             end
         end
@@ -263,30 +289,31 @@ spawn(function()
 
 
         MeleeCount = 0
-        if HasGodhuman then
-            Malee = Malee .. "Godhuman, "
-            MeleeCount = MeleeCount + 1
-        end
         if HasSuperhuman then
-            Malee = Malee .. "Superhuman, "
-            MeleeCount = MeleeCount + 1
-        end
-        if HasElectricClaw then
-            Malee = Malee .. "ElectricV2, "
-            MeleeCount = MeleeCount + 1
-        end
-        if HasDragonTalon then
-            Malee = Malee .. "DragonV2, "
+            Malee = Malee .. "\nSuperhuman,"
             MeleeCount = MeleeCount + 1
         end
         if HasDeathStep then
-            Malee = Malee .. "DeathStepV2, "
+            Malee = Malee .. "DeathStep,"
+            MeleeCount = MeleeCount + 1
+        end
+        if HasElectricClaw then
+            Malee = Malee .. "ElectricClaw,"
             MeleeCount = MeleeCount + 1
         end
         if HasSharkmanKarate then
-            Malee = Malee .. "SharkmanV2"
+            Malee = Malee .. "Sharkman Karate,"
             MeleeCount = MeleeCount + 1
         end
+        if HasDragonTalon then
+            Malee = Malee .. "Dragon Talon,"
+            MeleeCount = MeleeCount + 1
+        end
+        if HasGodhuman then
+            Malee = Malee .. "Godhuman"
+            MeleeCount = MeleeCount + 1
+        end
+        
         for _i, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
             if v:IsA("Tool") then
                 if v.ToolTip == "Blox Fruit" then
@@ -310,6 +337,7 @@ spawn(function()
         else
             Evo = "No"
         end
+        --Sword
         function GetWeaponInventory(Weaponname)
             for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventory")) do
                 if v.Type == "Sword" then
@@ -322,14 +350,20 @@ spawn(function()
         if GetWeaponInventory("Cursed Dual Katana") then
             CDKYed = true
         end
-        RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-        for i,x in pairs(RequestgetInventory) do
-            if x["Type"] == "Gun" then
-                if x["Name"] == "Soul Guitar" then
-                SGYed = true
+        --Gun
+        function GetWeaponGun(Gunname)
+            RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
+            for i,x in pairs(RequestgetInventory) do
+                if x["Type"] == "Gun" then
+                    if x["Name"] == Gunname then
+                    return true
+                    end
                 end
-            end
-        end  
+            end 
+        end
+        if GetWeaponGun("Soul Guitar") then
+            SoulG = true
+        end
          
         Awaked = S
         HHH = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getAwakenedAbilities")
@@ -347,7 +381,9 @@ spawn(function()
         AwakedStat = ""
         if CurrentFruitName == 'Dough' then
             AwakeLimitsStatus = 6
-            if S == 6 then Awaked = "Full" end
+            if S == 6 then 
+                Awaked = "Full" 
+            end
         else 
             if S == 5 then
                 Awaked = "Full "
@@ -367,11 +403,22 @@ spawn(function()
                 AwakedStat = "F."
             end
         end
-        
-        
+
+        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
+            if  v.Name == "Valkyrie Helm" then
+                Helmed = true
+            end
+        end
+        if GetMaterial("Mirror Fractal") == true then
+            MFStatus = "✅"
+            end
+        if Helmed == true then
+            HelmedStatus = "✅"
+        end
+
         HeeDes = ""
-        if _G.HeeBF["Log Mode"] == "Normal" then
-            HeeDes = HeeDes..World.." "..AwakedStat..CurrentFruitName.." ⪼ L: "..Level.." M: "..Money.." F: "..Fragment.." \nMelee: "..Malee.."\n".."Fruit Inventory: \n"..Fruit.."\nInventory: "..Sword
+        if _G.HeeBF["Log Mode"] == 1 then
+            HeeDes = HeeDes..AwakedStat..CurrentFruitName.." ➢ W :"..World.."  M:"..Money.."  F:"..Fragment.."  \nValkyrie Helm : "..HelmedStatus.."  \nMirror Fractal : "..MFStatus.."\n".."\n-----Fruit Inventory-----\n"..Fruit.."\n".." \n-----Melee-----"..Malee.."\n".."\n-----Inventory-----".."\n"..Sword
         end
             
         Request({
@@ -393,7 +440,7 @@ end)
 spawn(function()
     while wait(_G.Delay) do
         local Username = game.Players.LocalPlayer.Name
-
+        local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
         local args = {[1] = "BuyDeathStep",[2] = true}
         DeathStep = game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
         if DeathStep == 1 then
@@ -495,14 +542,6 @@ spawn(function()
             end
         end
 
-        for i,v in pairs(game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("getInventoryWeapons")) do
-            if  v.Name == "Valkyrie Helm" then
-                Helmed = true
-            end
-        end
-
- 
-
         if CDKHas then
         CDK = true
         end
@@ -578,77 +617,83 @@ spawn(function()
         end
 
 
-        HeeDes = ""
-        if _G.HeeBF["Log Mode"] == "Normal" then
-        HeeDes = HeeDes.."[ "                
-        if SixMalee and Moji and af and CDK then
-            HeeDes = HeeDes .. "โมตื่นดาบคู่  "..showrace
-        elseif SixMalee and CDK and Moji then
-            HeeDes = HeeDes .. "โมไม่ตื่นดาบคู่  "..showrace
-        elseif SixMalee and Moji and af  then
-            HeeDes = HeeDes .. "โมตื่น6หมัด  "..showrace
-        elseif SixMalee and Moji then
-            HeeDes = HeeDes .. "โมไม่ตื่น6หมัด  "..showrace
-        elseif SixMalee and CDK then
-            HeeDes = HeeDes .. "ดาบคู่  "..showrace
-        elseif SixMalee then
-            HeeDes = HeeDes .. "6หมัด  "..showrace
-
-        elseif FiveMalee and Moji and af and CDK then
-            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-        elseif FiveMalee and CDK and Moji then
-            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-        elseif FiveMalee and Moji and af  then
-            HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นครบ🎂"
-        elseif FiveMalee and Moji then
-            HeeDes = HeeDes .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
-        elseif FiveMalee and CDK then
-            HeeDes = HeeDes .. "5หมัด👊 ดาบคู่⚔️"
-        elseif FiveMalee then
-            HeeDes = HeeDes .. "5หมัด👊"   
-            
-        elseif FourMalee and Moji and af and CDK then
-            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-        elseif FourMalee and CDK and Moji then
-            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-        elseif FourMalee and Moji and af  then
-            HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นครบ🎂"
-        elseif FourMalee and Moji then
-            HeeDes = HeeDes .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
-        elseif FourMalee and CDK then
-            HeeDes = HeeDes .. "4หมัด👊 ดาบคู่⚔️"
-        elseif FourMalee then
-            HeeDes = HeeDes .. "4หมัด👊"   
-            
-        elseif ThreeMalee and Moji and af and CDK then
-            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
-        elseif ThreeMalee and CDK and Moji then
-            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
-        elseif ThreeMalee and Moji and af  then
-            HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นครบ🎂"
-        elseif ThreeMalee and Moji then
-            HeeDes = HeeDes .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
-        elseif ThreeMalee and CDK then
-            HeeDes = HeeDes .. "3หมัด👊 ดาบคู่⚔️"
-        elseif ThreeMalee then
-            HeeDes = HeeDes .. "3หมัด👊" 
-            
-        elseif TwoMalee then
-            HeeDes = HeeDes .. "ไก่กาก2หมัด👊"
-        elseif OneMalee then 
-            HeeDes = HeeDes .. "ไก่กาก1หมัด👊"  
-        end
-        HeeDes = HeeDes.." ]"              
+        HeeAl = ""
+        if _G.HeeBF["Log Mode"] == 1 then
+        HeeAl = "[ "
+        if Level == 2450 then
+            if SixMalee and Moji and af and CDK then
+                HeeAl = HeeAl .. "โมตื่นดาบคู่  "..showrace
+            elseif SixMalee and CDK and Moji then
+                HeeAl = HeeAl .. "โมไม่ตื่นดาบคู่  "..showrace
+            elseif SixMalee and Moji and af  then
+                HeeAl = HeeAl .. "โมตื่น6หมัด  "..showrace
+            elseif SixMalee and Moji then
+                HeeAl = HeeAl .. "โมไม่ตื่น6หมัด  "..showrace
+            elseif SixMalee and CDK then
+                HeeAl = HeeAl .. "ดาบคู่  "..showrace
+            elseif SixMalee then
+                HeeAl = HeeAl .. "6หมัด  "..showrace
+    
+            elseif FiveMalee and Moji and af and CDK then
+                HeeAl = HeeAl .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+            elseif FiveMalee and CDK and Moji then
+                HeeAl = HeeAl .. "5หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+            elseif FiveMalee and Moji and af  then
+                HeeAl = HeeAl .. "5หมัด👊 โมจิตื่นครบ🎂"
+            elseif FiveMalee and Moji then
+                HeeAl = HeeAl .. "5หมัด👊 โมจิตื่นไม่ครบ🎂"
+            elseif FiveMalee and CDK then
+                HeeAl = HeeAl .. "5หมัด👊 ดาบคู่⚔️"
+            elseif FiveMalee then
+                HeeAl = HeeAl .. "5หมัด👊"   
+                
+            elseif FourMalee and Moji and af and CDK then
+                HeeAl = HeeAl .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+            elseif FourMalee and CDK and Moji then
+                HeeAl = HeeAl .. "4หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+            elseif FourMalee and Moji and af  then
+                HeeAl = HeeAl .. "4หมัด👊 โมจิตื่นครบ🎂"
+            elseif FourMalee and Moji then
+                HeeAl = HeeAl .. "4หมัด👊 โมจิตื่นไม่ครบ🎂"
+            elseif FourMalee and CDK then
+                HeeAl = HeeAl .. "4หมัด👊 ดาบคู่⚔️"
+            elseif FourMalee then
+                HeeAl = HeeAl .. "4หมัด👊"   
+                
+            elseif ThreeMalee and Moji and af and CDK then
+                HeeAl = HeeAl .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นครบ🎂"
+            elseif ThreeMalee and CDK and Moji then
+                HeeAl = HeeAl .. "3หมัด👊 ดาบคู่⚔️ โมจิตื่นไม่ครบ🎂"
+            elseif ThreeMalee and Moji and af  then
+                HeeAl = HeeAl .. "3หมัด👊 โมจิตื่นครบ🎂"
+            elseif ThreeMalee and Moji then
+                HeeAl = HeeAl .. "3หมัด👊 โมจิตื่นไม่ครบ🎂"
+            elseif ThreeMalee and CDK then
+                HeeAl = HeeAl .. "3หมัด👊 ดาบคู่⚔️"
+            elseif ThreeMalee then
+                HeeAl = HeeAl .. "3หมัด👊" 
+                
+            elseif TwoMalee then
+                HeeAl = HeeAl .. "ไก่กาก2หมัด👊"
+            elseif OneMalee then 
+                HeeAl = HeeAl .. "ไก่กาก1หมัด👊"  
+            end
+        elseif Level < 2450 then
+            HeeAl = HeeAl.."Level :"..Level
+        end           
+        HeeAl = HeeAl.." ]"            
 
         end
 
         Request({
                 Method = "POST",
                 Url = "http://localhost:7963/SetAlias?Account=" .. Username,
-                Body = HeeDes
+                Body = HeeAl
                 })
     end
 end)
+
+
 
 
 
@@ -724,64 +769,64 @@ spawn(function()
             end
 
             RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-            for i, __ in pairs(RequestgetInventory) do
-                if __["Type"] == "Sword" then
+            for i, v in pairs(RequestgetInventory) do
+                if v["Type"] == "Sword" then
                     if Sword == "" then
                         if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
-                            if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                Sword = __["Name"] .. " "
+                            if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                                Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                             end
                         else
-                            Sword = __["Name"] .. " "
+                            Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                         end
                     else
                         if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
-                            if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                                Sword = Sword..", ".. __["Name"]
+                            if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                                Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                             end
                         else
-                            Sword = Sword..", ".. __["Name"]
+                            Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                         end
                     end
                 end
-                if __["Type"] == "Wear" then
+                if v["Type"] == "Wear" then
                     if Accesorry == "" then
-                        Accesorry = __["Name"] .. " "
+                        Accesorry = v["Name"] .. " "
                     else
-                        Accesorry = Accesorry .. __["Name"] .. " "
+                        Accesorry = Accesorry .. v["Name"] .. " "
                     end
                 end
-                if __["Type"] == "Blox Fruit" then
+                if v["Type"] == "Blox Fruit" then
                     if Fruit == "" then
                         if _G.ShowLegendary then
-                            if __["Rarity"] == 3 or __["Rarity"] == 4  then
-                                Fruit = __["Name"] .. ","
+                            if v["Rarity"] == 3 or v["Rarity"] == 4  then
+                                Fruit = v["Name"] .. ","
                             end
                         else
-                            Fruit = __["Name"] .. ","
+                            Fruit = v["Name"] .. ","
                         end
                     else
                         if _G.ShowLegendary then
-                            if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                                Fruit = Fruit .. __["Name"] .. ","
+                            if v["Rarity"] == 3 or v["Rarity"] == 4 then
+                                Fruit = Fruit .. v["Name"] .. ","
                              end
                         else
-                            Fruit = Fruit .. __["Name"] .. ","
+                            Fruit = Fruit .. v["Name"] .. ","
                         end
                     end
                 end
-                if __["Type"] == "Material" then
+                if v["Type"] == "Material" then
                     if Material == "" then
-                        Material = __["Name"] .. " "
+                        Material = v["Name"] .. " "
                     else
-                        Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
+                        Material = Material .. v["Name"] .. "( x" .. v["Count"] .. " )" .. " "
                     end
                 end
-                if __["Type"] == "Gun" then
+                if v["Type"] == "Gun" then
                     if Gun == "" then
-                        Gun = __["Name"] .. " "
+                        Gun = v["Name"] .. " "
                     else
-                        Gun = Gun .. __["Name"] .. " "
+                        Gun = Gun .. v["Name"] .. " "
                     end
                 end
             end
@@ -848,23 +893,23 @@ spawn(function()
                 end
             end
 
-            if HasGodhuman then
-                Malee = Malee .. "GodHuman, "
-            end
             if HasSuperhuman then
-                Malee = Malee .. "Superhuman, "
-            end
-            if HasElectricClaw then
-                Malee = Malee .. "ElericV2, "
-            end
-            if HasDragonTalon then
-                Malee = Malee .. "DragonV2, "
+                Malee = Malee .. "Superhuman,"
             end
             if HasDeathStep then
-                Malee = Malee .. "DeathStepV2, "
+                Malee = Malee .. "DeathStep,"
+            end
+            if HasElectricClaw then
+                Malee = Malee .. "ElectricClaw,"
             end
             if HasSharkmanKarate then
-                Malee = Malee .. "SharkManV2"
+                Malee = Malee .. "Sharkman Karate,"
+            end
+            if HasDragonTalon then
+                Malee = Malee .. "Dragon Talon,"
+            end
+            if HasGodhuman then
+                Malee = Malee .. "Godhuman"
             end
 
             local MC = 0
@@ -904,18 +949,18 @@ spawn(function()
             
             local Type = ""
             RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-            for i, __ in pairs(RequestgetInventory) do
-                if __["Type"] == "Sword" then
-                    if __["Name"] == "Cursed Dual Katana" then
+            for i, v in pairs(RequestgetInventory) do
+                if v["Type"] == "Sword" then
+                    if v["Name"] == "Cursed Dual Katana" then
                         CDKHas = true
                      end
                 end
             end
 
             RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-            for i, __ in pairs(RequestgetInventory) do
-                if __["Type"] == "Sword" then
-                    if __["Name"] == "Dark Dagger" then
+            for i, v in pairs(RequestgetInventory) do
+                if v["Type"] == "Sword" then
+                    if v["Name"] == "Dark Dagger" then
                         DDG = true
                     end
                 end
@@ -925,7 +970,7 @@ spawn(function()
             if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
                 SixMalee = true
             end
-            if _G.HeeBF["Sheet language"] == 1 then
+            if _G.HeeBF["Sheet language"] == "Thai" then
                 if DDG and CDKHas and S == 6 then
                     Type = "รวมมิตร"
                 elseif CDKHas and S == 6 then
@@ -959,21 +1004,21 @@ spawn(function()
 
             local NewFruitNameInven = table.concat(result, ", ")
             function GetAwaken()
-            if S == 1 then
-            return "Z"
-            elseif S ==2 then
-            return "Z, X"
-            elseif S ==3  then
-            return "Z, X, C"
-            elseif S == 4 then
-            return "Z X, C, V"
-            elseif S == 5 then
-            return "Z, X, C, V, F"
-            elseif S == 6  then
-            return "Z, X, C, V, F, Tap"
-            else
-            return "None"
-            end
+                if S == 1 then
+                    return "Z"
+                elseif S ==2 then
+                    return "Z, X"
+                elseif S ==3  then
+                    return "Z, X, C"
+                elseif S == 4 then
+                    return "Z X, C, V"
+                elseif S == 5 then
+                    return "Z, X, C, V, F"
+                elseif S == 6  then
+                    return "Z, X, C, V, F, Tap"
+                else
+                    return "None"
+                end
             end
             if CurrentFruitName == "" then
 
@@ -982,9 +1027,9 @@ spawn(function()
             "Hee Service/AutoSaveDes",
             }
             for _, folder in ipairs(folders) do
-            if not isfolder(folder) then
-                makefolder(folder)
-            end
+                if not isfolder(folder) then
+                    makefolder(folder)
+                end
             end
 
             local showraceSave = ""
@@ -1043,28 +1088,22 @@ spawn(function()
             local player_name = game.Players.LocalPlayer.Name 
             local player_str = input_str:match(player_name .. ":%S+")
             _G.SaveDesScription = {
-            Name = Username,
-            Password = player_str,
-            Sea = World,
-            Lvl = Level,
-            Fragments = Fragment,
-            Race = game:GetService("Players").LocalPlayer.Data.Race.Value,
-            Mirror = MFStatus,
-            Valkyrie = HelmedStatus,
-            Fruit = CurrentFruitName..' [ M. '.. FruitMastery..' ]',
-            AwakedSkill = GetAwaken(),
-            MainInfo = MainInFoModes2,
-            CDK = CDKCheck,
-            SoulGuitar = SGCheck,
-            HallowScythe = HSChck,
-            Tushita = TSCheck,
-            Yama = YMCheck,
-            FruitInventory = NewFruitNameInven,
-            TypeAccount = Type,
-            Bele = Money,
-            FightingStyle = Malee,
-            SwordInven = Sword,
-            ShowRaceSheet = showraceSave,
+                Name = Username,
+                Password = player_str,
+                Sea = World,
+                Lvl = Level,
+                Fragments = Fragment,
+                Race = game:GetService("Players").LocalPlayer.Data.Race.Value,
+                Mirror = MFStatus,
+                Valkyrie = HelmedStatus,
+                Fruit = CurrentFruitName..' [ M. '.. FruitMastery..' ]',
+                AwakedSkill = GetAwaken(),
+                FruitInventory = NewFruitNameInven,
+                TypeAccount = Type,
+                Bele = Money,
+                FightingStyle = Malee,
+                SwordInven = Sword,
+                ShowRaceSheet = showraceSave,
             }
             writefile("Hee Service/AutoSaveDes/".. game.Players.LocalPlayer.Name.. ".json", game:GetService("HttpService"):JSONEncode(_G.SaveDesScription))
 
@@ -1079,11 +1118,11 @@ local function len(x)
     end
     return q
 end
-function getRartiy(__)
-    if __["Rarity"] == 3 and _G.Legendary then
-        return __
+function getRartiy(v)
+    if v["Rarity"] == 3 and _G.Legendary then
+        return v
     else
-        return __
+        return v
     end
 end
 spawn(function()
@@ -1312,64 +1351,64 @@ Nexus:OnButtonClick("logbtn",function()
     end
         
     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-        for i, __ in pairs(RequestgetInventory) do
-            if __["Type"] == "Sword" then
+        for i, v in pairs(RequestgetInventory) do
+            if v["Type"] == "Sword" then
                 if Sword == "" then
                     if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus  then
-                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                            Sword = __["Name"] .. " "
+                        if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                            Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                         end
                     else
-                        Sword = __["Name"] .. " "
+                        Sword = v["Name"].."[Mas Lv. "..v["Mastery"].."]"
                     end
                 else
                     if _G.HeeBF["LogInventory"] and _G.OnlyRareItemPlus then
-                        if table.find(_G.HeeBF["LogInventory"], __["Name"]) then
-                            Sword = Sword..", ".. __["Name"]
+                        if table.find(_G.HeeBF["LogInventory"], v["Name"]) then
+                            Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                         end
                     else
-                        Sword = Sword..", ".. __["Name"]
+                        Sword = Sword..", ".. v["Name"].."[Mas Lv."..v["Mastery"].."]"
                     end
                 end
             end
-            if __["Type"] == "Wear" then
+            if v["Type"] == "Wear" then
                 if Accesorry == "" then
-                    Accesorry = __["Name"] .. " "
+                    Accesorry = v["Name"] .. " "
                 else
-                    Accesorry = Accesorry .. __["Name"] .. " "
+                    Accesorry = Accesorry .. v["Name"] .. " "
                 end
             end
-            if __["Type"] == "Blox Fruit" then
+            if v["Type"] == "Blox Fruit" then
                 if Fruit == "" then
                     if _G.ShowLegendary then
-                        if __["Rarity"] == 3 or __["Rarity"] == 4  then
-                            Fruit = __["Name"] .. ","
+                        if v["Rarity"] == 3 or v["Rarity"] == 4  then
+                            Fruit = v["Name"] .. ","
                         end
                     else
-                        Fruit = __["Name"] .. ","
+                        Fruit = v["Name"] .. ","
                     end
                 else
                     if _G.ShowLegendary then
-                        if __["Rarity"] == 3 or __["Rarity"] == 4 then
-                            Fruit = Fruit .. __["Name"] .. ","
+                        if v["Rarity"] == 3 or v["Rarity"] == 4 then
+                            Fruit = Fruit .. v["Name"] .. ","
                         end
                     else
-                        Fruit = Fruit .. __["Name"] .. ","
+                        Fruit = Fruit .. v["Name"] .. ","
                     end
                 end
             end
-            if __["Type"] == "Material" then
+            if v["Type"] == "Material" then
                 if Material == "" then
-                    Material = __["Name"] .. " "
+                    Material = v["Name"] .. " "
                 else
-                    Material = Material .. __["Name"] .. "( x" .. __["Count"] .. " )" .. " "
+                    Material = Material .. v["Name"] .. "( x" .. v["Count"] .. " )" .. " "
                 end
             end
-            if __["Type"] == "Gun" then
+            if v["Type"] == "Gun" then
                 if Gun == "" then
-                    Gun = __["Name"] .. " "
+                    Gun = v["Name"] .. " "
                 else
-                    Gun = Gun .. __["Name"] .. " "
+                    Gun = Gun .. v["Name"] .. " "
                 end
             end
         end
@@ -1436,23 +1475,23 @@ Nexus:OnButtonClick("logbtn",function()
         end
     end
 
-    if HasGodhuman then
-        Malee = Malee .. "GodHuman, "
-    end
     if HasSuperhuman then
-        Malee = Malee .. "Superhuman, "
-    end
-    if HasElectricClaw then
-        Malee = Malee .. "ElericV2, "
-    end
-    if HasDragonTalon then
-        Malee = Malee .. "DragonV2, "
+        Malee = Malee .. "\nSuperhuman,"
     end
     if HasDeathStep then
-        Malee = Malee .. "DeathStepV2, "
+        Malee = Malee .. "DeathStep,"
+    end
+    if HasElectricClaw then
+        Malee = Malee .. "ElectricClaw,"
     end
     if HasSharkmanKarate then
-        Malee = Malee .. "SharkManV2"
+        Malee = Malee .. "Sharkman Karate,"
+    end
+    if HasDragonTalon then
+        Malee = Malee .. "Dragon Talon,"
+    end
+    if HasGodhuman then
+        Malee = Malee .. "Godhuman"
     end
 
     if game:GetService("Players").LocalPlayer.Data.DevilFruit.Value == '' then
@@ -1483,45 +1522,13 @@ Nexus:OnButtonClick("logbtn",function()
 
     local Type = ""
     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-    for i, __ in pairs(RequestgetInventory) do
-        if __["Type"] == "Sword" then
-            if __["Name"] == "Cursed Dual Katana" then
+    for i, v in pairs(RequestgetInventory) do
+        if v["Type"] == "Sword" then
+            if v["Name"] == "Cursed Dual Katana" then
                 CDKHas = true
             end
         end
     end
-    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-    for i, __ in pairs(RequestgetInventory) do
-        if __["Type"] == "Sword" then
-            if __["Name"] == "Tushita" then
-                TSHas = true
-            end
-        end
-    end
-    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-    for i, __ in pairs(RequestgetInventory) do
-        if __["Type"] == "Sword" then
-            if __["Name"] == "Yama" then
-                YMHAS = true
-            end
-        end
-    end
-    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-    for i, __ in pairs(RequestgetInventory) do
-        if __["Type"] == "Sword" then
-            if __["Name"] == "Hallow Scythe" then
-                HSHas = true
-            end
-        end
-    end
-    RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
-    for i,x in pairs(RequestgetInventory) do
-         if x["Type"] == "Gun" then
-             if x["Name"] == "Soul Guitar" then
-               SGJJJ = true
-             end
-         end
-    end 
     RequestgetInventory = game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("getInventory")
     for i,x in pairs(RequestgetInventory) do
          if x["Type"] == "Sword" then
@@ -1533,7 +1540,7 @@ Nexus:OnButtonClick("logbtn",function()
     if HasDragonTalon and HasElectricClaw and HasSuperhuman and HasSharkmanKarate and HasDeathStep and HasGodhuman then
         SixMalee = true
     end
-    if _G.HeeBF["Sheet language"] == 1 then
+    if _G.HeeBF["Sheet language"] == "Thai" then
         if DDG and CDKHas and S == 6 then
             Type = "รวมมิตร"
         elseif CDKHas and S == 6 then
@@ -1642,9 +1649,9 @@ Nexus:OnButtonClick("logbtn",function()
     showraceSave = THrace.." V1"
     end
 
-    local HeeDes
+    local LogSheet
     if _G.HeeBF["Sheet Modes"] == 1 then 
-        HeeDes =
+        LogSheet =
         HttpService:JSONEncode({
             ["ประเภทรหัส"] = Type,
             ["Account"] = Username,
@@ -1666,7 +1673,7 @@ Nexus:OnButtonClick("logbtn",function()
     syn.request({
         ["Url"] = url,
         ["Method"] = "POST",
-        ["Body"] = HeeDes,
+        ["Body"] = LogSheet,
         ["Headers"] = 
             {
             ["Content-Type"] = "application/json"
@@ -1682,7 +1689,7 @@ Nexus:OnButtonClick("logbtn",function()
     Rq({
         Method = "POST",
         Url = "http://localhost:7963/SetDescription?Account="..user,
-        Body = "Send Sheet - Successfully"
+        Body = "[ Send Sheet - Successfully ]"
         })
     Game:Shutdown()
 end)
@@ -1723,11 +1730,11 @@ Nexus:OnButtonClick("logAdvance",function()
             end
         end
     end
-    local HeeDes = HttpService:JSONEncode(allData)
+    local LogAdvance = HttpService:JSONEncode(allData)
     syn.request({
                 ["Url"] = url,
                 ["Method"] = "POST",
-                ["Body"] = HeeDes,
+                ["Body"] = LogAdvance,
                 ["Headers"] = {
                     ["Content-Type"] = "application/json"
                 }
@@ -1748,5 +1755,37 @@ Nexus:OnButtonClick("logAdvance",function()
             Body = "[ AdvanceLog Sheet - Successfully ]"
             })
     end
-end) 
+end)
+task.spawn(function() 
+    local cu = 0;
+    local mx = _G.TimeAFK;
+    local q = nil;
+    spawn(function() 
+        while true do wait(60) 
+            if u == 0 then 
+                pcall(function() 
+                    q = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                    u = u + 1;
+                end)
+            end
+            if u ~= 0 then 
+                if type(q) ~= "nil" then 
+                    if(q.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 10 then
+                        q = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                        u = u + 1;
+                    end
+                    if(q.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 10 then
+                        q = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                        u = 0;
+                    end
+                end
+               if u >= (mx + 1) then 
+                    _G.ScriptWhenNoMove()
+                end
+            end
+        end
+    end)
+    print('Anti AFK (No Move) Is Load')	
+end)
+
 print("Scripts Loaded")
