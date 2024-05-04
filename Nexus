@@ -1,17 +1,9 @@
 
-if Nexus then Nexus:Stop() end
-
 local Nexus = {}
-local WSConnect = syn and syn.websocket.connect or Krnl.WebSocket and Krnl.WebSocket.connect or WebSocket and WebSocket.connect or WebSocket.connect
 
-
-if not WSConnect then
-    if messagebox then
-        messagebox(('Nexus encountered an error while launching!\n\n%s'):format('Your exploit (' .. (identifyexecutor and identifyexecutor() or 'UNKNOWN') .. ') is not supported'), 'Roblox Account Manager', 0)
-    end
-    
-    return
-end
+pcall(function (...)
+    WSConnect = WebSocket.connect or syn and syn.websocket.connect or Krnl.WebSocket and Krnl.WebSocket.connect or WebSocket and WebSocket.connect 
+end) 
 
 local TeleportService = game:GetService'TeleportService'
 local InputService = game:GetService'UserInputService'
