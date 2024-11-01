@@ -29,7 +29,7 @@ _G.MainSettings = {
 _G.Fruits_Settings = {
     --['Main_Fruits'] = { 'Buddha-Buddha', 'Dough-Dough' },
     --['Main_Fruits'] = { 'Dark-Dark', 'Magma-Magma', 'Dough-Dough' },
-    ['Main_Fruits'] = { 'ice-ice', 'Magma-Magma', 'Dough-Dough' },
+    ['Main_Fruits'] = { 'Dark-Dark','Ice-Ice', 'Magma-Magma', 'Dough-Dough' },
     ['Select_Fruits'] = { 'Dark-Dark' }
 }
 _G.Quests_Settings = {
