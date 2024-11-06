@@ -29,7 +29,7 @@ _G.MainSettings = {
 _G.Fruits_Settings = {
     --['Main_Fruits'] = { 'Buddha-Buddha', 'Dough-Dough' },
     --['Main_Fruits'] = { 'Dark-Dark', 'Magma-Magma', 'Dough-Dough' },
-    ['Main_Fruits'] = { 'Dark-Dark','Ice-Ice', 'Magma-Magma', 'Dough-Dough','Rumble-Rumble' },
+    ['Main_Fruits'] = { 'Dark-Dark', 'Ice-Ice', 'Magma-Magma', 'Dough-Dough', 'Rumble-Rumble' },
     ['Select_Fruits'] = { 'Dark-Dark' }
 }
 _G.Quests_Settings = {
@@ -73,7 +73,7 @@ _G.FarmMastery_Settings = {
         ["ManualSettings"] = {
             "Saber",
             "Cursed Dual Katana",
-"Shark Anchor"
+            "Shark Anchor"
         }
     }
 }
